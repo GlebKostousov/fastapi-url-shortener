@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from .short_urls.views import router as short_urls_router
+from api.api_v1.short_urls.views.list_views import router as short_urls_router
 
 router = APIRouter(prefix="/v1")
 
