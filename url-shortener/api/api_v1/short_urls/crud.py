@@ -9,7 +9,7 @@ from typing import Dict, List
 
 from pydantic import BaseModel, AnyHttpUrl
 
-from schemas.short_url import ShortUrl, ShortUrlCreate
+from schemas.short_url import ShortUrl, ShortUrlCreate, ShortUrlUpdate
 
 
 class ShortUrlStorage(BaseModel):
@@ -31,6 +31,12 @@ class ShortUrlStorage(BaseModel):
 
     def delete(self, short_url_in: ShortUrl) -> None:
         self.delete_by_slug(slug=short_url_in.slug)
+
+    # noinspection PyMethodMayBeStatic
+    def update(self, short_url: ShortUrl, short_url_in: ShortUrlUpdate) -> ShortUrl:
+        for field, value in short_url_in:
+            setattr(short_url, field, value)
+        return short_url
 
 
 storage = ShortUrlStorage()
