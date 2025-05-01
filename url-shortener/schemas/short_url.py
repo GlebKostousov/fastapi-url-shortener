@@ -1,6 +1,6 @@
 from pydantic import BaseModel, AnyHttpUrl
 from typing import Annotated
-from annotated_types import Len, MaxLen
+from annotated_types import MaxLen, MinLen
 
 Description = Annotated[str, MaxLen(200)]
 
@@ -15,7 +15,7 @@ class ShortUrl(ShortUrlBase):
     Модель сокращенной ссылки
     """
 
-    slug: str
+    slug: Annotated[str, MinLen(2), MaxLen(20)]
 
 
 class ShortUrlCreate(ShortUrlBase):
@@ -38,3 +38,7 @@ class ShortUrlUpdate(ShortUrlBase):
 class ShortUrlPartialUpdate(ShortUrlBase):
     target_url: AnyHttpUrl | None = None
     description: Description | None = None
+
+
+class ShortUrlRead(ShortUrlBase):
+    slug: str

@@ -8,6 +8,7 @@ from api.api_v1.short_urls.crud import storage
 from schemas.short_url import (
     ShortUrl,
     ShortUrlCreate,
+    ShortUrlRead,
 )
 
 router = APIRouter(
@@ -18,7 +19,7 @@ router = APIRouter(
 
 @router.post(
     path="/",
-    response_model=ShortUrl,
+    response_model=ShortUrlRead,
     status_code=status.HTTP_201_CREATED,
 )
 def create_short_url(
