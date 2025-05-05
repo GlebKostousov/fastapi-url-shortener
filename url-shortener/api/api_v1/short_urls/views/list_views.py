@@ -24,8 +24,7 @@ router = APIRouter(
     status_code=status.HTTP_201_CREATED,
 )
 def create_short_url(
-    short_url_create: ShortUrlCreate,
-    background_tasks: BackgroundTasks,
+    short_url_create: ShortUrlCreate, background_tasks: BackgroundTasks
 ) -> ShortUrl:
     background_tasks.add_task(storage.save_state)
     return storage.create(ShortUrl(**short_url_create.model_dump()))
