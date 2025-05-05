@@ -5,6 +5,7 @@ Update
 Delete
 """
 
+import logging
 from typing import Dict, List
 
 from pydantic import BaseModel, ValidationError
@@ -17,16 +18,20 @@ from schemas.short_url import (
 )
 from core.config import SHORT_URLS_STORAGE_FILE_PATH
 
+log = logging.getLogger(__name__)
+
 
 class ShortUrlStorage(BaseModel):
     slug_to_short_url: Dict[str, ShortUrl] = {}
 
     def save_state(self) -> None:
         SHORT_URLS_STORAGE_FILE_PATH.write_text(self.model_dump_json(indent=2))
+        log.info("Save short url to storage file.")
 
     @classmethod
     def from_state(cls) -> "ShortUrlStorage":
         if not SHORT_URLS_STORAGE_FILE_PATH.exists():
+            log.info("No short url storage file.")
             return ShortUrlStorage()
         return cls.model_validate_json(SHORT_URLS_STORAGE_FILE_PATH.read_text())
 
@@ -67,5 +72,8 @@ class ShortUrlStorage(BaseModel):
 
 try:
     storage = ShortUrlStorage.from_state()
+    log.warning("Recovered data from storage file.")
 except ValidationError:
     storage = ShortUrlStorage()
+    storage.save_state()
+    log.warning("Rewritten storage file due to validation error.")
