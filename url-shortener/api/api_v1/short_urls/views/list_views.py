@@ -3,6 +3,7 @@ from typing import List
 from fastapi import (
     APIRouter,
     status,
+    BackgroundTasks,
 )
 from api.api_v1.short_urls.crud import storage
 from schemas.short_url import (
@@ -24,7 +25,9 @@ router = APIRouter(
 )
 def create_short_url(
     short_url_create: ShortUrlCreate,
+    background_tasks: BackgroundTasks,
 ) -> ShortUrl:
+    background_tasks.add_task(storage.save_state)
     return storage.create(ShortUrl(**short_url_create.model_dump()))
 
 
