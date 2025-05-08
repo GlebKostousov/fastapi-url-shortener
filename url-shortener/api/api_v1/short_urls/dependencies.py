@@ -1,10 +1,14 @@
+from typing import Annotated
+
 from fastapi import (
     HTTPException,
     BackgroundTasks,
     Request,
+    status,
+    Query,
 )
-from starlette import status
 
+from core.config import API_TOKENS
 from schemas.short_url import ShortUrl
 from api.api_v1.short_urls.crud import storage
 import logging
@@ -39,3 +43,18 @@ def save_storage_state(
     if request.method in UNSAFE_METHODS:
         log.debug("Add background tasks to save storage")
         background_tasks.add_task(storage.save_state)
+
+
+def api_token_required(
+    request: Request,
+    api_token: Annotated[
+        str,
+        Query(),
+    ] = None,
+):
+    if request.method in UNSAFE_METHODS:
+        if api_token not in API_TOKENS:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Your API token is invalid.",
+            )

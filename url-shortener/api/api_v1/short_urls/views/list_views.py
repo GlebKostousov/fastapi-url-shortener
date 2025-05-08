@@ -3,11 +3,13 @@ from typing import List
 from fastapi import (
     APIRouter,
     status,
-    BackgroundTasks,
     Depends,
 )
 from api.api_v1.short_urls.crud import storage
-from api.api_v1.short_urls.dependencies import save_storage_state
+from api.api_v1.short_urls.dependencies import (
+    save_storage_state,
+    api_token_required,
+)
 from schemas.short_url import (
     ShortUrl,
     ShortUrlCreate,
@@ -20,7 +22,19 @@ log = logging.getLogger(__name__)
 router = APIRouter(
     prefix="/short-urls",
     tags=["short_urls"],
-    dependencies=[Depends(save_storage_state)],
+    dependencies=[Depends(save_storage_state), Depends(api_token_required)],
+    responses={
+        status.HTTP_401_UNAUTHORIZED: {
+            "description": "Invalid API token",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "detail": "Your API token is invalid.",
+                    },
+                },
+            },
+        },
+    },
 )
 
 
