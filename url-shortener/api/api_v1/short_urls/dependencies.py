@@ -11,9 +11,14 @@ from fastapi import (
 from fastapi.security import (
     HTTPBearer,
     HTTPAuthorizationCredentials,
+    HTTPBasic,
+    HTTPBasicCredentials,
 )
 
-from core.config import API_TOKENS
+from core.config import (
+    API_TOKENS,
+    USERS_DB,
+)
 from schemas.short_url import ShortUrl
 from api.api_v1.short_urls.crud import storage
 import logging
@@ -33,6 +38,11 @@ static_api_token = HTTPBearer(
     auto_error=False,
     scheme_name="Static Api Token",
     description="Your **Static Api Token** from developer portal. [Read more](#)",
+)
+user_basic_auth = HTTPBasic(
+    scheme_name="Basic Auth",
+    description="Basic user name + password auth",
+    auto_error=False,
 )
 
 
@@ -78,3 +88,24 @@ def api_token_required(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="You API token is invalid.",
         )
+
+
+def basic_user_auth_required(
+    credentials: Annotated[
+        HTTPBasicCredentials | None,
+        Depends(user_basic_auth),
+    ] = None,
+):
+    log.info("User auth credentials: %s", credentials)
+    if (
+        credentials
+        and credentials.username in USERS_DB
+        and credentials.password == USERS_DB[credentials.username]
+    ):
+        return
+
+    raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="User credentials required. Invalid username or password.",
+        headers={"WWW-Authenticate": "Basic"},
+    )
