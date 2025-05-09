@@ -66,23 +66,9 @@ def save_storage_state(
         background_tasks.add_task(storage.save_state)
 
 
-def api_token_required(
-    request: Request,
-    api_token: Annotated[
-        HTTPAuthorizationCredentials | None,
-        Depends(static_api_token),
-    ] = None,
-) -> None:
-    log.info("Api token received: %s", api_token)
-    if request.method not in UNSAFE_METHODS:
-        return
-
-    if not api_token:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="API token is required",
-        )
-
+def validate_api_token(
+    api_token: HTTPAuthorizationCredentials,
+):
     if api_token.credentials not in API_TOKENS:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -90,22 +76,44 @@ def api_token_required(
         )
 
 
-def basic_user_auth_required(
-    credentials: Annotated[
-        HTTPBasicCredentials | None,
-        Depends(user_basic_auth),
-    ] = None,
-):
-    log.info("User auth credentials: %s", credentials)
+def validate_basic_auth(credentials: HTTPBasicCredentials | None):
     if (
-        credentials
-        and credentials.username in USERS_DB
+        credentials.username in USERS_DB
         and credentials.password == USERS_DB[credentials.username]
     ):
         return
 
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="User credentials required. Invalid username or password.",
+        detail="Invalid username or password.",
         headers={"WWW-Authenticate": "Basic"},
+    )
+
+
+def api_token_or_basic_auth_required(
+    request: Request,
+    api_token: Annotated[
+        HTTPAuthorizationCredentials | None,
+        Depends(static_api_token),
+    ] = None,
+    credentials: Annotated[
+        HTTPBasicCredentials | None,
+        Depends(user_basic_auth),
+    ] = None,
+):
+    log.info("auth type: %s", "basic auth" if credentials else "api token")
+    if request.method not in UNSAFE_METHODS:
+        return
+
+    if credentials:
+        log.info("credentials: %s", credentials)
+        return validate_basic_auth(credentials=credentials)
+
+    if api_token:
+        log.info("api_token: %s", api_token)
+        return validate_api_token(api_token=api_token)
+
+    raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="API token or basic auth required",
     )
