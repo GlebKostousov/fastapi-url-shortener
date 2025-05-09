@@ -5,7 +5,7 @@ from fastapi import (
     BackgroundTasks,
     Request,
     status,
-    Query,
+    Header,
 )
 
 from core.config import API_TOKENS
@@ -49,7 +49,7 @@ def api_token_required(
     request: Request,
     api_token: Annotated[
         str,
-        Query(),
+        Header(alias="x-auth-token"),
     ] = "",
 ) -> None:
     if request.method not in UNSAFE_METHODS:
