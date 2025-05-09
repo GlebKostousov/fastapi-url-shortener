@@ -22,14 +22,17 @@ log = logging.getLogger(__name__)
 router = APIRouter(
     prefix="/short-urls",
     tags=["short_urls"],
-    dependencies=[Depends(save_storage_state), Depends(api_token_required)],
+    dependencies=[
+        Depends(save_storage_state),
+        Depends(api_token_required),
+    ],
     responses={
         status.HTTP_401_UNAUTHORIZED: {
             "description": "Invalid API token",
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": "Your API token is invalid.",
+                        "detail": "Invalid API token. Only for unsafe methods.",
                     },
                 },
             },
