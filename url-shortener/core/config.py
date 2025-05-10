@@ -1,3 +1,5 @@
+# https://github.com/GlebKostousov/List-of-the-movie
+
 import logging
 from pathlib import Path
 from typing import Final
@@ -10,13 +12,6 @@ LOG_FORMAT: Final[str] = (
     "[%(asctime)s.%(msecs)03d] %(module)10s:%(lineno)-3d %(levelname)-7s - %(message)s"
 )
 
-API_TOKENS: frozenset[str] = frozenset(
-    {
-        "mFOcFcH4FWqEfH-88jhCTbVxN6c",
-        "PkaVw5QFUmypE9Gwsf2y2g",
-        "T2FP-VqUmzfg5nZ01ZxrCA",
-    }
-)
 
 # Only for demo
 # No real users in code
@@ -29,3 +24,6 @@ USERS_DB: dict[str, str] = {
 REDIS_HOST: Final[str] = "localhost"
 REDIS_PORT: Final[int] = 6379
 REDIS_DB: Final[int] = 0
+REDIS_DB_TOKENS: Final[int] = 1
+
+REDIS_TOKENS_SET_NAME: Final[str] = "tokens"

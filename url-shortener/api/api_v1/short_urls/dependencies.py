@@ -16,11 +16,12 @@ from fastapi.security import (
 )
 
 from core.config import (
-    API_TOKENS,
     USERS_DB,
+    REDIS_TOKENS_SET_NAME,
 )
 from schemas.short_url import ShortUrl
 from api.api_v1.short_urls.crud import storage
+from api.api_v1.short_urls.redis import redis_tokens
 import logging
 
 log = logging.getLogger(__name__)
@@ -69,11 +70,16 @@ def save_storage_state(
 def validate_api_token(
     api_token: HTTPAuthorizationCredentials,
 ):
-    if api_token.credentials not in API_TOKENS:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="You API token is invalid.",
-        )
+    if redis_tokens.sismember(
+        name=REDIS_TOKENS_SET_NAME,  # название множества
+        value=api_token.credentials,  # значение для проверки во множестве
+    ):
+        return
+
+    raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="You API token is invalid.",
+    )
 
 
 def validate_basic_auth(credentials: HTTPBasicCredentials | None):
