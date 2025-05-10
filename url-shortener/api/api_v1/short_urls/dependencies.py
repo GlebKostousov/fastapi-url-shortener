@@ -17,7 +17,6 @@ from fastapi.security import (
 
 from core.config import (
     USERS_DB,
-    REDIS_TOKENS_SET_NAME,
 )
 from schemas.short_url import ShortUrl
 from api.api_v1.short_urls.crud import storage
@@ -70,10 +69,7 @@ def save_storage_state(
 def validate_api_token(
     api_token: HTTPAuthorizationCredentials,
 ):
-    if redis_tokens.sismember(
-        name=REDIS_TOKENS_SET_NAME,  # название множества
-        value=api_token.credentials,  # значение для проверки во множестве
-    ):
+    if redis_tokens.token_exists(api_token.credentials):
         return
 
     raise HTTPException(
