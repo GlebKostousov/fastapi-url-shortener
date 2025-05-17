@@ -13,16 +13,11 @@ LOG_FORMAT: Final[str] = (
 )
 
 
-# Only for demo
-# No real users in code
-USERS_DB: dict[str, str] = {
-    # username: password
-    "sam": "password",
-    "bob": "qwerty",
-}
 """     ----- Настройка Redis -----     """
 REDIS_HOST: Final[str] = "localhost"
 REDIS_PORT: Final[int] = 6379
-REDIS_DB_TOKENS: Final[int] = 1
 
+REDIS_DB_TOKENS: Final[int] = 1
 REDIS_TOKENS_SET_NAME: Final[str] = "tokens"
+
+REDIS_DB_USERS: Final[int] = 2
