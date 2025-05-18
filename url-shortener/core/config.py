@@ -21,3 +21,6 @@ REDIS_DB_TOKENS: Final[int] = 1
 REDIS_TOKENS_SET_NAME: Final[str] = "tokens"
 
 REDIS_DB_USERS: Final[int] = 2
+
+REDIS_DB_SHORT_URLS: Final[int] = 3
+REDIS_SHORT_URLS_HASH_NAME: Final[str] = "short-urls"

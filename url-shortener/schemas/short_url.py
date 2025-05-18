@@ -16,6 +16,7 @@ class ShortUrl(ShortUrlBase):
     """
 
     slug: Annotated[str, MinLen(2), MaxLen(20)]
+    visits: int = 42
 
 
 class ShortUrlCreate(ShortUrlBase):
