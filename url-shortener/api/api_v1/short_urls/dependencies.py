@@ -63,7 +63,7 @@ def save_storage_state(
     yield
     if request.method in UNSAFE_METHODS:
         log.debug("Add background tasks to save storage")
-        background_tasks.add_task(storage.save_state)
+        # background_tasks.add_task(storage.save_state)
 
 
 def validate_api_token(
