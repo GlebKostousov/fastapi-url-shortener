@@ -58,7 +58,9 @@ class ShortUrlStorage(BaseModel):
         return cls.model_validate_json(SHORT_URLS_STORAGE_FILE_PATH.read_text())
 
     def get(self) -> List[ShortUrl]:
-        return list(self.slug_to_short_url.values())
+        if json_list := redis_short_urls.hvals(name=config.REDIS_SHORT_URLS_HASH_NAME):
+            return [ShortUrl.model_validate_json(elem) for elem in json_list if elem]
+        return []
 
     def get_by_slug(self, slug: str) -> ShortUrl | None:
         if short_url_json := redis_short_urls.hget(
