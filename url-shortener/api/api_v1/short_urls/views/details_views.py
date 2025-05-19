@@ -2,7 +2,6 @@ from typing import Annotated
 
 from fastapi import (
     Depends,
-    BackgroundTasks,
 )
 from starlette import status
 

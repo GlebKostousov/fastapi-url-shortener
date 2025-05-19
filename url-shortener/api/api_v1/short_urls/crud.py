@@ -55,15 +55,15 @@ class ShortUrlStorage(BaseModel):
         ):
             return ShortUrl.model_validate_json(short_url_json)
 
+    @classmethod
+    def delete_by_slug(cls, slug: str) -> None:
+        redis_short_urls.hdel(config.REDIS_SHORT_URLS_HASH_NAME, slug)
+
     def create(self, short_url_in: ShortUrlCreate) -> ShortUrl:
         short_url: ShortUrl = ShortUrl(**short_url_in.model_dump())
         self.save_state(short_url)
         log.info(f"Created short url %s", short_url)
         return short_url
-
-    @classmethod
-    def delete_by_slug(cls, slug: str) -> None:
-        redis_short_urls.hdel(config.REDIS_SHORT_URLS_HASH_NAME, slug)
 
     def delete(self, short_url_in: ShortUrl) -> None:
         self.delete_by_slug(slug=short_url_in.slug)

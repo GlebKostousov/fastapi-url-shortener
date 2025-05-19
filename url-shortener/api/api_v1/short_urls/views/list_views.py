@@ -7,7 +7,6 @@ from fastapi import (
 )
 from api.api_v1.short_urls.crud import storage
 from api.api_v1.short_urls.dependencies import (
-    save_storage_state,
     api_token_or_basic_auth_required,
 )
 from schemas.short_url import (
@@ -23,7 +22,6 @@ router = APIRouter(
     prefix="/short-urls",
     tags=["short_urls"],
     dependencies=[
-        Depends(save_storage_state),
         Depends(api_token_or_basic_auth_required),
     ],
     responses={
