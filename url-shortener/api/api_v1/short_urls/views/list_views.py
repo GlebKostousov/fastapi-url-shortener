@@ -4,8 +4,9 @@ from fastapi import (
     APIRouter,
     status,
     Depends,
+    HTTPException,
 )
-from api.api_v1.short_urls.crud import storage
+from api.api_v1.short_urls.crud import storage, ShortUrlAlreadyExistsError
 from api.api_v1.short_urls.dependencies import (
     api_token_or_basic_auth_required,
 )
@@ -43,11 +44,29 @@ router = APIRouter(
     path="/",
     response_model=ShortUrlRead,
     status_code=status.HTTP_201_CREATED,
+    responses={
+        status.HTTP_409_CONFLICT: {
+            "description": "You tried create already exist url",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "detail": "Movie with slug='name' already exists",
+                    },
+                },
+            },
+        },
+    },
 )
 def create_short_url(
     short_url_create: ShortUrlCreate,
 ) -> ShortUrl:
-    return storage.create(short_url_create)
+    try:
+        return storage.create_of_raise_if_exists(short_url_create)
+    except ShortUrlAlreadyExistsError:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Movie with slug={short_url_create.slug!r} already exists",
+        )
 
 
 @router.get(

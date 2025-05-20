@@ -29,6 +29,18 @@ redis_short_urls = Redis(
 )
 
 
+class ShortUrlBaseError(Exception):
+    """
+    Base exception for short url CRUD actions
+    """
+
+
+class ShortUrlAlreadyExistsError(ShortUrlBaseError):
+    """
+    Raised when short url already exists
+    """
+
+
 class ShortUrlStorage(BaseModel):
 
     @classmethod
@@ -56,6 +68,13 @@ class ShortUrlStorage(BaseModel):
             return ShortUrl.model_validate_json(short_url_json)
 
     @classmethod
+    def exists(cls, slug: str) -> bool:
+        return redis_short_urls.hexists(
+            name=config.REDIS_SHORT_URLS_HASH_NAME,
+            key=slug,
+        )
+
+    @classmethod
     def delete_by_slug(cls, slug: str) -> None:
         redis_short_urls.hdel(config.REDIS_SHORT_URLS_HASH_NAME, slug)
 
@@ -64,6 +83,12 @@ class ShortUrlStorage(BaseModel):
         self.save_state(short_url)
         log.info(f"Created short url %s", short_url)
         return short_url
+
+    def create_of_raise_if_exists(self, short_url_in: ShortUrlCreate) -> ShortUrl:
+        if not self.exists(short_url_in.slug):
+            return self.create(short_url_in)
+
+        raise ShortUrlAlreadyExistsError(short_url_in.slug)
 
     def delete(self, short_url_in: ShortUrl) -> None:
         self.delete_by_slug(slug=short_url_in.slug)
