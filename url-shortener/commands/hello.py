@@ -1,0 +1,20 @@
+from typing import Annotated
+
+from rich import print
+import typer
+
+
+app = typer.Typer(
+    no_args_is_help=True,
+    rich_markup_mode="rich",
+)
+
+
+@app.command(help="Great user by [bold]name[/bold]")
+def hello(
+    name: Annotated[
+        str,
+        typer.Argument(help="Name to great"),
+    ],
+):
+    print(f"[bold]Hello, [green]{name}[/green][/bold]!")
