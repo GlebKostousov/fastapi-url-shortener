@@ -62,11 +62,11 @@ def create_short_url(
 ) -> ShortUrl:
     try:
         return storage.create_of_raise_if_exists(short_url_create)
-    except ShortUrlAlreadyExistsError:
+    except ShortUrlAlreadyExistsError as e:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail=f"Movie with slug={short_url_create.slug!r} already exists",
-        )
+            detail=str(e),
+        ) from None
 
 
 @router.get(

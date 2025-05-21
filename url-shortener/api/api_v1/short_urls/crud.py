@@ -40,6 +40,10 @@ class ShortUrlAlreadyExistsError(ShortUrlBaseError):
     Raised when short url already exists
     """
 
+    def __init__(self, slug: str):
+        self.slug = slug
+        super().__init__(f"Short URL with slug '{slug!r}' already exists")
+
 
 class ShortUrlStorage(BaseModel):
 
