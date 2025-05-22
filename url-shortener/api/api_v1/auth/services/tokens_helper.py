@@ -11,6 +11,14 @@ class AbstractTokensHelper(ABC):
     """
 
     @abstractmethod
+    def get_all_tokens(self) -> list[str]:
+        """
+        Get all exist tokens in db
+        :return: list of tokens
+        """
+        pass
+
+    @abstractmethod
     def token_exists(self, token: str) -> bool:
         """
         Check if token exists
