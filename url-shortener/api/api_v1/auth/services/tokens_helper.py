@@ -11,6 +11,12 @@ class AbstractTokensHelper(ABC):
     """
 
     @abstractmethod
+    def delete_token(self, token_to_delete: str) -> None:
+        """
+        Delete token from DB
+        """
+
+    @abstractmethod
     def get_all_tokens(self) -> list[str]:
         """
         Get all exist tokens in db

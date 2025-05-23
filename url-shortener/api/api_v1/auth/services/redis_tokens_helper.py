@@ -35,6 +35,12 @@ class RedisTokensHelper(AbstractTokensHelper):
             )
         )
 
+    def delete_token(self, token_to_delete: str) -> None:
+        self.redis_tokens.srem(
+            self.tokens_set,
+            token_to_delete,
+        )
+
     def add_token(self, token_to_add: str) -> None:
         self.redis_tokens.sadd(self.tokens_set, token_to_add)
 
