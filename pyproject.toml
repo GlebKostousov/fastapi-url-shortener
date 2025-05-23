@@ -11,3 +11,8 @@ dependencies = [
     "uvicorn<=0.20.0",
 ]
 
+[dependency-groups]
+dev = [
+    "mypy>=1.15.0",
+]
+
