@@ -1,5 +1,5 @@
 import logging
-
+from typing import cast
 from redis import Redis
 
 from api.api_v1.auth.services.users_helper import AbstractUsersHelper
@@ -29,7 +29,7 @@ class UserTokensHelper(AbstractUsersHelper):
         if not self.redis_users.exists(username):
             return None
 
-        return self.redis_users.get(name=username)
+        return cast(str | None, self.redis_users.get(name=username))
 
     def add_user(self, username: str, password: str) -> None:
         self.redis_users.set(name=username, value=password)

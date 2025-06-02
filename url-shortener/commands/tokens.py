@@ -21,7 +21,7 @@ def check(
         str,
         typer.Argument(help="token to check"),
     ],
-):
+) -> None:
     """
     Check the token exists.
     """

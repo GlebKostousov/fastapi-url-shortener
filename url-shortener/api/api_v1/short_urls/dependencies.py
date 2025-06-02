@@ -57,7 +57,7 @@ def prefetch_short_urls(slug: str) -> ShortUrl:
 
 def validate_api_token(
     api_token: HTTPAuthorizationCredentials,
-):
+) -> None:
     if redis_tokens.token_exists(api_token.credentials):
         return
 
@@ -67,7 +67,7 @@ def validate_api_token(
     )
 
 
-def validate_basic_auth(credentials: HTTPBasicCredentials | None):
+def validate_basic_auth(credentials: HTTPBasicCredentials | None) -> None:
     if credentials and redis_users.validate_user_password(
         username=credentials.username,
         password=credentials.password,
@@ -91,7 +91,7 @@ def api_token_or_basic_auth_required(
         HTTPBasicCredentials | None,
         Depends(user_basic_auth),
     ] = None,
-):
+) -> None:
     log.info("auth type: %s", "basic auth" if credentials else "api token")
     if request.method not in UNSAFE_METHODS:
         return

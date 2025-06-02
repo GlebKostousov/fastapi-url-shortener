@@ -7,7 +7,7 @@ Description = Annotated[str, MaxLen(200)]
 
 class ShortUrlBase(BaseModel):
     target_url: AnyHttpUrl
-    description: Description = ""
+    description: Description
 
 
 class ShortUrl(ShortUrlBase):
@@ -16,6 +16,7 @@ class ShortUrl(ShortUrlBase):
     """
 
     slug: Annotated[str, MinLen(2), MaxLen(20)]
+    description: str
     visits: int = 42
 
 
@@ -26,6 +27,7 @@ class ShortUrlCreate(ShortUrlBase):
 
     # noinspection PyTypeHints
     slug: Annotated[str, MaxLen(200)]
+    description: Description = ""
 
 
 class ShortUrlUpdate(ShortUrlBase):
@@ -33,13 +35,16 @@ class ShortUrlUpdate(ShortUrlBase):
     Модель для обновления информации о сокращенной ссылке
     """
 
-    description: Description
 
-
-class ShortUrlPartialUpdate(ShortUrlBase):
+class ShortUrlPartialUpdate(BaseModel):
     target_url: AnyHttpUrl | None = None
     description: Description | None = None
 
 
 class ShortUrlRead(ShortUrlBase):
+    """
+    Модель для чтения данных по короткой ссылке
+    """
+
     slug: str
+    description: str

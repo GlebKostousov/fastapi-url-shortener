@@ -36,7 +36,7 @@ ShortUrlBySlug = Annotated[ShortUrl, Depends(prefetch_short_urls)]
 
 
 @router.get(path="/", response_model=ShortUrlRead)
-def read_short_url(url: ShortUrlBySlug):
+def read_short_url(url: ShortUrlBySlug) -> ShortUrl:
     return url
 
 
@@ -51,7 +51,7 @@ def delete_short_url(
 def update_short_url_details(
     url: ShortUrlBySlug,
     url_in: ShortUrlUpdate,
-):
+) -> ShortUrl:
     return storage.update(short_url=url, short_url_in=url_in)
 
 
@@ -59,5 +59,5 @@ def update_short_url_details(
 def partial_update_short_url(
     url: ShortUrlBySlug,
     url_in: ShortUrlPartialUpdate,
-):
+) -> ShortUrl:
     return storage.partial_update(short_url=url, short_url_in=url_in)

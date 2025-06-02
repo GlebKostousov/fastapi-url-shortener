@@ -48,7 +48,7 @@ class ShortUrlAlreadyExistsError(ShortUrlBaseError):
 class ShortUrlStorage(BaseModel):
 
     @classmethod
-    def save_state(cls, short_url) -> None:
+    def save_state(cls, short_url: ShortUrl) -> None:
         redis_short_urls.hset(
             name=config.REDIS_SHORT_URLS_HASH_NAME,
             key=short_url.slug,
@@ -71,11 +71,15 @@ class ShortUrlStorage(BaseModel):
         ):
             return ShortUrl.model_validate_json(short_url_json)
 
+        return None
+
     @classmethod
     def exists(cls, slug: str) -> bool:
-        return redis_short_urls.hexists(
-            name=config.REDIS_SHORT_URLS_HASH_NAME,
-            key=slug,
+        return bool(
+            redis_short_urls.hexists(
+                name=config.REDIS_SHORT_URLS_HASH_NAME,
+                key=slug,
+            )
         )
 
     @classmethod
