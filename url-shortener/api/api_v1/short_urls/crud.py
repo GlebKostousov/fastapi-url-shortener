@@ -6,7 +6,6 @@ Delete
 """
 
 import logging
-from typing import List
 
 from pydantic import BaseModel
 from redis import Redis
@@ -57,7 +56,7 @@ class ShortUrlStorage(BaseModel):
         log.info("Save short url to storage file.")
 
     @classmethod
-    def get(cls) -> List[ShortUrl]:
+    def get(cls) -> list[ShortUrl]:
         return [
             ShortUrl.model_validate_json(value)
             for value in redis_short_urls.hvals(name=config.REDIS_SHORT_URLS_HASH_NAME)
@@ -79,7 +78,7 @@ class ShortUrlStorage(BaseModel):
             redis_short_urls.hexists(
                 name=config.REDIS_SHORT_URLS_HASH_NAME,
                 key=slug,
-            )
+            ),
         )
 
     @classmethod

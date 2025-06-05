@@ -1,5 +1,4 @@
 import logging
-from typing import List
 
 from fastapi import (
     APIRouter,
@@ -72,7 +71,7 @@ def create_short_url(
 
 @router.get(
     path="/",
-    response_model=List[ShortUrlRead],
+    response_model=list[ShortUrlRead],
 )
-def read_short_urls_list() -> List[ShortUrl]:
+def read_short_urls_list() -> list[ShortUrl]:
     return storage.get()

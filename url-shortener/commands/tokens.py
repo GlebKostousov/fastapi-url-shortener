@@ -53,7 +53,8 @@ def tokens_list() -> None:
 @app.command(name="rm")
 def delete(
     token_to_delete: Annotated[
-        str, typer.Argument(help="Token needed to delete from DB")
+        str,
+        typer.Argument(help="Token needed to delete from DB"),
     ],
 ) -> None:
     """
