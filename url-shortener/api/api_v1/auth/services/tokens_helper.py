@@ -22,7 +22,6 @@ class AbstractTokensHelper(ABC):
         Get all exist tokens in db
         :return: list of tokens
         """
-        pass
 
     @abstractmethod
     def token_exists(self, token: str) -> bool:

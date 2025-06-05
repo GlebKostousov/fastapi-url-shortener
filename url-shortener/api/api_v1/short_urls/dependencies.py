@@ -93,7 +93,7 @@ def api_token_or_basic_auth_required(
 ) -> None:
     log.info("auth type: %s", "basic auth" if credentials else "api token")
     if request.method not in UNSAFE_METHODS:
-        return
+        return None
 
     if credentials:
         log.info("credentials: %s", credentials)
