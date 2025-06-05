@@ -74,6 +74,10 @@ select = [
     "S", # flake8-bandit (S)
     "BLE", # flake8-blind-except (BLE)
     "FBT", # flake8-boolean-trap (FBT)
+    "B", # flake8-bugbear (B)
+    "C4", # flake8-comprehensions (C4)
+    "T10", # flake8-debugger (T10)
+    "EM", # flake8-errmsg (EM)
 
 ]
 ignore = []
