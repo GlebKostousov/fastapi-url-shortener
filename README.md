@@ -6,7 +6,21 @@
 
 Right click   `url-shortener` -> Mark directory as -> Sources root
 
+### Configure pre-commit
 
+
+
+### Install
+
+Install pre-commit hook:
+```shell
+pre-commit install
+```
+
+Install packages:
+```shell
+uv install
+```
 
 ### Run
 
@@ -25,4 +39,3 @@ fastapi dev
 ```shell
 python -c 'import secrets; print(secrets.token_urlsafe(16))'
 ```
-
