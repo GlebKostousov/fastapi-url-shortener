@@ -16,6 +16,7 @@ class RedisTokensHelper(AbstractTokensHelper):
         port: int,
         db: int,
         tokens_set_name: str,
+        *,
         decode_responses: bool = False,
     ) -> None:
 

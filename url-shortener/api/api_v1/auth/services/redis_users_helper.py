@@ -1,3 +1,5 @@
+__all__ = ("redis_users",)
+
 import logging
 from typing import cast
 
@@ -16,6 +18,7 @@ class UserTokensHelper(AbstractUsersHelper):
         host: str,
         port: int,
         db: int,
+        *,
         decode_responses: bool = False,
     ) -> None:
 

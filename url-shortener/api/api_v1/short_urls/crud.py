@@ -89,7 +89,7 @@ class ShortUrlStorage(BaseModel):
     def create(self, short_url_in: ShortUrlCreate) -> ShortUrl:
         short_url: ShortUrl = ShortUrl(**short_url_in.model_dump())
         self.save_state(short_url)
-        log.info(f"Created short url %s", short_url)
+        log.info("Created short url %s", short_url)
         return short_url
 
     def create_of_raise_if_exists(self, short_url_in: ShortUrlCreate) -> ShortUrl:
