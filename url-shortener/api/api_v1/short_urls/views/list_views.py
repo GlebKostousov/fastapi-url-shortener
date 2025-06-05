@@ -1,12 +1,14 @@
+import logging
 from typing import List
 
 from fastapi import (
     APIRouter,
-    status,
     Depends,
     HTTPException,
+    status,
 )
-from api.api_v1.short_urls.crud import storage, ShortUrlAlreadyExistsError
+
+from api.api_v1.short_urls.crud import ShortUrlAlreadyExistsError, storage
 from api.api_v1.short_urls.dependencies import (
     api_token_or_basic_auth_required,
 )
@@ -15,7 +17,6 @@ from schemas.short_url import (
     ShortUrlCreate,
     ShortUrlRead,
 )
-import logging
 
 log = logging.getLogger(__name__)
 
@@ -71,7 +72,7 @@ def create_short_url(
 
 @router.get(
     path="/",
-    response_model=List[ShortUrl],
+    response_model=List[ShortUrlRead],
 )
 def read_short_urls_list() -> List[ShortUrl]:
     return storage.get()

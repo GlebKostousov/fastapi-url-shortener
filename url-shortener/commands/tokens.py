@@ -1,11 +1,11 @@
 from typing import Annotated
 
-from api.api_v1.auth.services import redis_tokens
-
 import typer
 from rich import print
 from rich.console import Console
 from rich.markdown import Markdown
+
+from api.api_v1.auth.services import redis_tokens
 
 app = typer.Typer(
     name="tokens",

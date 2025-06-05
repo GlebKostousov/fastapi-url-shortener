@@ -1,8 +1,8 @@
 from typing import Annotated
 
 from fastapi import (
-    Depends,
     APIRouter,
+    Depends,
 )
 from starlette.responses import RedirectResponse
 

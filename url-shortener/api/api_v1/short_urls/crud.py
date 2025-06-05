@@ -15,8 +15,8 @@ from core import config
 from schemas.short_url import (
     ShortUrl,
     ShortUrlCreate,
-    ShortUrlUpdate,
     ShortUrlPartialUpdate,
+    ShortUrlUpdate,
 )
 
 log = logging.getLogger(__name__)
@@ -40,7 +40,7 @@ class ShortUrlAlreadyExistsError(ShortUrlBaseError):
     Raised when short url already exists
     """
 
-    def __init__(self, slug: str):
+    def __init__(self, slug: str) -> None:
         self.slug = slug
         super().__init__(f"Short URL with slug '{slug!r}' already exists")
 

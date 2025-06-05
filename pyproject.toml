@@ -67,7 +67,10 @@ target-version = "py313"
 
 [tool.ruff.lint]
 select = [
-    "FAST",
+    "FAST", # FastAPI (FAST)
+    "ANN", # flake8-annotations (ANN)
+    "I", # isort (I)
+
 ]
 ignore = []
 

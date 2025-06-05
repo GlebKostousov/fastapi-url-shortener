@@ -1,6 +1,7 @@
-from pydantic import BaseModel, AnyHttpUrl
 from typing import Annotated
+
 from annotated_types import MaxLen, MinLen
+from pydantic import AnyHttpUrl, BaseModel
 
 Description = Annotated[str, MaxLen(200)]
 

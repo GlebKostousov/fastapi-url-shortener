@@ -179,3 +179,4 @@ cython_debug/
 
 # Virtual environments
 /url-shortener/short-urls.json
+/staff.py
