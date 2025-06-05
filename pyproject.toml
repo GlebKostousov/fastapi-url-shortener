@@ -86,6 +86,16 @@ select = [
     "PT", # flake8-pytest-style (PT)
     "Q", # flake8-quotes (Q)
     "RET", # flake8-return (RET)
+    "SIM", # flake8-simplify (SIM)
+    "TCH", # flake8-type-checking (TCH)
+    "ARG", # flake8-unused-arguments (ARG)
+    "PTH", # flake8-use-pathlib (PTH)
+    "C90", # mccabe (C90)
+    "PD", # pandas-vet (PD)
+    "N", # pep8-naming (N)
+    "PL", # pylint (PL)
+    "FURB", # refurb (FURB)
+    "TRY", # tryceratops (TRY)
 
 ]
 ignore = []
