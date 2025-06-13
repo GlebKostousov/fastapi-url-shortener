@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from pydantic import AnyHttpUrl
+from pydantic import AnyHttpUrl, ValidationError
 
 from schemas.short_url import (
     ShortUrl,
@@ -104,3 +104,28 @@ class ShortUrlCreateTestCase(TestCase):
                     ),
                     short_url.target_url,
                 )
+
+    def test_short_url_slug_too_short(self) -> None:
+        with self.assertRaisesRegex(
+            ValidationError,
+            expected_regex="String should have at least 2 characters",
+        ):
+            ShortUrlCreate(
+                slug="s",
+                description="Some description",
+                target_url=AnyHttpUrl("https://example.com"),
+            )
+
+    def test_short_url_slug_too_short_with_regex(self) -> None:
+        with self.assertRaises(ValidationError) as exc_info:
+            ShortUrlCreate(
+                slug="s",
+                description="Some description",
+                target_url=AnyHttpUrl("https://example.com"),
+            )
+        # print(exc_info.exception)
+        # print(exc_info.exception.json())
+        # print(exc_info.exception.errors())
+        error_details = exc_info.exception.errors()[0]
+        expect_type = "string_too_short"
+        self.assertEqual(expect_type, error_details["type"])

@@ -35,7 +35,7 @@ class ShortUrlCreate(ShortUrlBase):
     """
 
     # noinspection PyTypeHints
-    slug: Annotated[str, MaxLen(200)]
+    slug: Annotated[str, MinLen(2), MaxLen(200)]
     description: Description = ""
 
 
