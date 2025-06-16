@@ -1,6 +1,7 @@
 # https://github.com/GlebKostousov/List-of-the-movie
 
 import logging
+from os import getenv
 from typing import Final
 
 LOG_LEVEL = logging.INFO
@@ -11,8 +12,7 @@ LOG_FORMAT: Final[str] = (
 
 """     ----- Настройка Redis -----     """
 REDIS_HOST: Final[str] = "localhost"
-REDIS_PORT: Final[int] = 6379
-
+REDIS_PORT: Final[int] = int(getenv("REDIS_PORT", "0")) or 6379
 REDIS_DB_TOKENS: Final[int] = 1
 REDIS_TOKENS_SET_NAME: Final[str] = "tokens"
 
