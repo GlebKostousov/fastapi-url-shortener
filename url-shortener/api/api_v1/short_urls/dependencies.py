@@ -1,3 +1,5 @@
+__all__ = ("UNSAFE_METHODS",)
+
 import logging
 from typing import Annotated
 
