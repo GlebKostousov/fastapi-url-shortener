@@ -1,6 +1,5 @@
 import random
 import string
-from os import getenv
 from typing import ClassVar, Final
 from unittest import TestCase
 
@@ -13,10 +12,6 @@ from schemas.short_url import (
     ShortUrlPartialUpdate,
     ShortUrlUpdate,
 )
-
-if getenv("TESTING") != "1":
-    error_testing_msg = "Environment is not ready for testing"
-    raise OSError(error_testing_msg)
 
 
 def create_short_url() -> ShortUrl:
