@@ -1,3 +1,4 @@
+__all__ = ("router",)
 from typing import Annotated
 
 from fastapi import (

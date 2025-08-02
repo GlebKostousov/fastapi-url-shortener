@@ -1,0 +1,16 @@
+from fastapi import Request, APIRouter
+
+router = APIRouter()
+
+
+@router.get("/")
+def read_root(
+    request: Request,
+    name: str = "World Gleb",
+) -> dict[str, str]:
+    docs_url = request.url.replace(path="/docs", query="")
+
+    return {
+        "message": f"Hello {name}!",
+        "docs": str(docs_url),
+    }

@@ -1,4 +1,4 @@
-__all__ = ("UNSAFE_METHODS",)
+__all__ = ("UNSAFE_METHODS", "prefetch_short_urls")
 
 import logging
 from typing import Annotated
