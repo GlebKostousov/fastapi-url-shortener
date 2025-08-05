@@ -43,7 +43,6 @@ class ShortUrlAlreadyExistsError(ShortUrlBaseError):
 
     def __init__(self, slug: str) -> None:
         self.slug = slug
-        super().__init__(f"Short URL with slug '{slug!r}' already exists")
 
 
 class ShortUrlStorage(BaseModel):

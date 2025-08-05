@@ -3,9 +3,10 @@ import string
 from typing import ClassVar, Final
 from unittest import TestCase
 
+import pytest
 from pydantic import AnyHttpUrl
 
-from api.api_v1.short_urls.crud import storage
+from api.api_v1.short_urls.crud import ShortUrlAlreadyExistsError, storage
 from schemas.short_url import (
     ShortUrl,
     ShortUrlCreate,
@@ -113,3 +114,15 @@ class ShortUrlStorageGetTestCase(TestCase):
                     short_url,
                     db_short_url,
                 )
+
+
+def test_create_of_raise_if_exists() -> None:
+    existing_short_url = create_short_url()
+    short_url_create = ShortUrlCreate(**existing_short_url.model_dump())
+    with pytest.raises(
+        ShortUrlAlreadyExistsError,
+        match=short_url_create.slug,
+    ) as exc_info:
+        storage.create_of_raise_if_exists(short_url_create)
+
+    assert exc_info.value.args[0] == short_url_create.slug
