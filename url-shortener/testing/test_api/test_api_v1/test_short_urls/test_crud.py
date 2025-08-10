@@ -1,5 +1,6 @@
 import random
 import string
+from collections.abc import Generator
 from typing import ClassVar, Final
 from unittest import TestCase
 
@@ -16,8 +17,10 @@ from schemas.short_url import (
 
 
 @pytest.fixture()
-def short_url() -> ShortUrl:
-    return create_short_url()
+def short_url() -> Generator[ShortUrl]:
+    short_url = create_short_url()
+    yield short_url
+    storage.delete(short_url)
 
 
 def create_short_url() -> ShortUrl:
