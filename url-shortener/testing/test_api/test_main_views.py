@@ -2,12 +2,8 @@ from fastapi import status
 from fastapi.testclient import TestClient
 from pytest import mark
 
-from main import app
 
-client = TestClient(app=app)
-
-
-def test_root_view() -> None:
+def test_root_view(client: TestClient) -> None:
     # TODO: fake date
     name = "John"
     query = {"name": name}
@@ -27,7 +23,7 @@ def test_root_view() -> None:
         "Jpgm Smith",
     ],
 )
-def test_root_view_custom_name(name: str) -> None:
+def test_root_view_custom_name(name: str, client: TestClient) -> None:
     query = {"name": name}
     response = client.get("/", params=query)
     assert response.status_code == status.HTTP_200_OK, response.text
