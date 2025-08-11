@@ -5,7 +5,7 @@ Update
 Delete
 """
 
-__all__ = ("storage",)
+__all__ = ("ShortUrlAlreadyExistsError", "storage")
 
 import logging
 
