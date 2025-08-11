@@ -1,11 +1,13 @@
 import random
 import string
+from collections.abc import Generator
 from typing import ClassVar, Final
 from unittest import TestCase
 
+import pytest
 from pydantic import AnyHttpUrl
 
-from api.api_v1.short_urls.crud import storage
+from api.api_v1.short_urls.crud import ShortUrlAlreadyExistsError, storage
 from schemas.short_url import (
     ShortUrl,
     ShortUrlCreate,
@@ -21,6 +23,13 @@ def create_short_url() -> ShortUrl:
         slug="".join(random.choices(string.ascii_letters, k=8)),
     )
     return storage.create(short_url_in)
+
+
+@pytest.fixture()
+def short_url() -> Generator[ShortUrl]:
+    short_url = create_short_url()
+    yield short_url
+    storage.delete(short_url)
 
 
 class ShortUrlStorageUpdateTestCase(TestCase):
@@ -113,3 +122,14 @@ class ShortUrlStorageGetTestCase(TestCase):
                     short_url,
                     db_short_url,
                 )
+
+
+def test_create_of_raise_if_exists(short_url: ShortUrl) -> None:
+    short_url_create = ShortUrlCreate(**short_url.model_dump())
+    with pytest.raises(
+        ShortUrlAlreadyExistsError,
+        match=short_url_create.slug,
+    ) as exc_info:
+        storage.create_of_raise_if_exists(short_url_create)
+
+    assert exc_info.value.args[0] == short_url_create.slug
