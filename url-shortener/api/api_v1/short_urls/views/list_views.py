@@ -50,7 +50,6 @@ def read_short_urls_list() -> list[ShortUrl]:
 
 @router.post(
     path="/",
-    name="create_short_url",
     response_model=ShortUrlRead,
     status_code=status.HTTP_201_CREATED,
     responses={
