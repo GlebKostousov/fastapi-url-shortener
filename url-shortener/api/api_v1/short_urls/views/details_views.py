@@ -3,8 +3,8 @@ from typing import Annotated
 from fastapi import (
     APIRouter,
     Depends,
+    status,
 )
-from starlette import status
 
 from api.api_v1.short_urls.crud import storage
 from api.api_v1.short_urls.dependencies import prefetch_short_urls

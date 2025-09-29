@@ -40,8 +40,17 @@ router = APIRouter(
 )
 
 
+@router.get(
+    path="/",
+    response_model=list[ShortUrlRead],
+)
+def read_short_urls_list() -> list[ShortUrl]:
+    return storage.get()
+
+
 @router.post(
     path="/",
+    name="create_short_url",
     response_model=ShortUrlRead,
     status_code=status.HTTP_201_CREATED,
     responses={
@@ -67,11 +76,3 @@ def create_short_url(
             status_code=status.HTTP_409_CONFLICT,
             detail=str(e),
         ) from None
-
-
-@router.get(
-    path="/",
-    response_model=list[ShortUrlRead],
-)
-def read_short_urls_list() -> list[ShortUrl]:
-    return storage.get()
