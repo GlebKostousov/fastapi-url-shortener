@@ -1,11 +1,7 @@
-import random
-import string
-from collections.abc import Generator
 from typing import ClassVar, Final
 from unittest import TestCase
 
 import pytest
-from pydantic import AnyHttpUrl
 
 from api.api_v1.short_urls.crud import ShortUrlAlreadyExistsError, storage
 from schemas.short_url import (
@@ -14,22 +10,7 @@ from schemas.short_url import (
     ShortUrlPartialUpdate,
     ShortUrlUpdate,
 )
-
-
-def create_short_url() -> ShortUrl:
-    short_url_in = ShortUrlCreate(
-        target_url=AnyHttpUrl("https://google.com"),
-        description="dsada",
-        slug="".join(random.choices(string.ascii_letters, k=8)),
-    )
-    return storage.create(short_url_in)
-
-
-@pytest.fixture()
-def short_url() -> Generator[ShortUrl]:
-    short_url = create_short_url()
-    yield short_url
-    storage.delete(short_url)
+from testing.test_api.conftest import create_short_url
 
 
 class ShortUrlStorageUpdateTestCase(TestCase):
