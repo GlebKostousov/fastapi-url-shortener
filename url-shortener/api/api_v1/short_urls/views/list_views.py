@@ -58,7 +58,7 @@ def read_short_urls_list() -> list[ShortUrl]:
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": "Movie with slug='name' already exists",
+                        "detail": "Short URL with slug='name' already exists.",
                     },
                 },
             },
@@ -70,8 +70,8 @@ def create_short_url(
 ) -> ShortUrl:
     try:
         return storage.create_of_raise_if_exists(short_url_create)
-    except ShortUrlAlreadyExistsError as e:
+    except ShortUrlAlreadyExistsError:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail=str(e),
+            detail=f"Short URL with slug={short_url_create.slug!r} already exists.",
         ) from None

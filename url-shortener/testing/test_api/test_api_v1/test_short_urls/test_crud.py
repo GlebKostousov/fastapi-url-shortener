@@ -1,4 +1,4 @@
-from typing import ClassVar, Final
+from typing import ClassVar
 from unittest import TestCase
 
 import pytest
@@ -10,11 +10,10 @@ from schemas.short_url import (
     ShortUrlPartialUpdate,
     ShortUrlUpdate,
 )
-from testing.test_api.conftest import create_short_url
+from testing.conftest import create_short_url
 
 
-class ShortUrlStorageUpdateTestCase(TestCase):
-
+class ShortUrlsStorageUpdateTestCase(TestCase):
     def setUp(self) -> None:
         self.short_url = create_short_url()
 
@@ -22,57 +21,50 @@ class ShortUrlStorageUpdateTestCase(TestCase):
         storage.delete(self.short_url)
 
     def test_update(self) -> None:
-        short_url_update = ShortUrlUpdate(**self.short_url.model_dump())
+        short_url_update = ShortUrlUpdate(
+            **self.short_url.model_dump(),
+        )
         source_description = self.short_url.description
-
         short_url_update.description *= 2
         updated_short_url = storage.update(
-            self.short_url,
-            short_url_update,
+            short_url=self.short_url,
+            short_url_in=short_url_update,
         )
-
         self.assertNotEqual(
             source_description,
             updated_short_url.description,
         )
-
         self.assertEqual(
             short_url_update,
-            ShortUrlUpdate(
-                **updated_short_url.model_dump(),
-            ),
+            ShortUrlUpdate(**updated_short_url.model_dump()),
         )
 
-    def test_partial_update(self) -> None:
+    def test_update_partial(self) -> None:
         short_url_partial_update = ShortUrlPartialUpdate(
             description=self.short_url.description * 2,
         )
         source_description = self.short_url.description
-
-        partial_updated_short_url = storage.partial_update(
+        updated_short_url = storage.partial_update(
             short_url=self.short_url,
             short_url_in=short_url_partial_update,
         )
-
         self.assertNotEqual(
             source_description,
-            partial_updated_short_url.description,
+            updated_short_url.description,
         )
-
         self.assertEqual(
             short_url_partial_update.description,
-            partial_updated_short_url.description,
+            updated_short_url.description,
         )
 
 
-class ShortUrlStorageGetTestCase(TestCase):
-
-    SHORT_URLS_COUNTS: Final[int] = 3
+class ShortUrlsStorageGetShortUrlsTestCase(TestCase):
+    SHORT_URLS_COUNT = 3
     short_urls: ClassVar[list[ShortUrl]] = []
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.short_urls = [create_short_url() for _ in range(cls.SHORT_URLS_COUNTS)]
+        cls.short_urls = [create_short_url() for _ in range(cls.SHORT_URLS_COUNT)]
 
     @classmethod
     def tearDownClass(cls) -> None:
@@ -81,16 +73,11 @@ class ShortUrlStorageGetTestCase(TestCase):
 
     def test_get_list(self) -> None:
         short_urls = storage.get()
-        slug_in_db = {si.slug for si in short_urls}
-
-        expected_slug = {si.slug for si in self.short_urls}
-
-        expected_dif: set[ShortUrl] = set()
-        real_dif = expected_slug - slug_in_db
-        self.assertEqual(
-            expected_dif,
-            real_dif,
-        )
+        expected_slugs = {su.slug for su in self.short_urls}
+        slugs = {su.slug for su in short_urls}
+        expected_diff = set[str]()
+        diff = expected_slugs - slugs
+        self.assertEqual(expected_diff, diff)
 
     def test_get_by_slug(self) -> None:
         for short_url in self.short_urls:
@@ -105,7 +92,7 @@ class ShortUrlStorageGetTestCase(TestCase):
                 )
 
 
-def test_create_of_raise_if_exists(short_url: ShortUrl) -> None:
+def test_create_or_raise_if_exists(short_url: ShortUrl) -> None:
     short_url_create = ShortUrlCreate(**short_url.model_dump())
     with pytest.raises(
         ShortUrlAlreadyExistsError,
