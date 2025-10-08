@@ -39,7 +39,11 @@ def read_short_url(url: ShortUrlBySlug) -> ShortUrl:
     return url
 
 
-@router.delete(path="/", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete(
+    path="/",
+    status_code=status.HTTP_204_NO_CONTENT,
+    name="delete_short_url",
+)
 def delete_short_url(
     url: ShortUrlBySlug,
 ) -> None:
