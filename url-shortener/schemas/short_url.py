@@ -11,7 +11,9 @@ from typing import Annotated
 from annotated_types import MaxLen, MinLen
 from pydantic import AnyHttpUrl, BaseModel
 
-Description = Annotated[str, MaxLen(200)]
+from core.const import MAX_LENGTH_DESCRIPTION
+
+Description = Annotated[str, MaxLen(MAX_LENGTH_DESCRIPTION)]
 
 
 class ShortUrlBase(BaseModel):
