@@ -40,11 +40,12 @@ def _generate_slug() -> str:
 
 def build_short_url_create_random_slug(
     description: str = DESCRIPTION_FOR_TEST,
+    target_url: str = "https://example.com",
 ) -> ShortUrlCreate:
     return ShortUrlCreate(
         slug=_generate_slug(),
         description=description,
-        target_url=AnyHttpUrl("https://example.com"),
+        target_url=AnyHttpUrl(target_url),
     )
 
 
@@ -56,8 +57,14 @@ def create_short_url(
     return storage.create(short_url_in)
 
 
-def create_short_url_random_slug(description: str = DESCRIPTION_FOR_TEST) -> ShortUrl:
-    short_url_in = build_short_url_create_random_slug(description=description)
+def create_short_url_random_slug(
+    description: str = DESCRIPTION_FOR_TEST,
+    target_url: str = "https://example.com",
+) -> ShortUrl:
+    short_url_in = build_short_url_create_random_slug(
+        description=description,
+        target_url=target_url,
+    )
     return storage.create(short_url_in)
 
 

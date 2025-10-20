@@ -23,7 +23,6 @@ class TestUpdatePartial:
 
     @pytest.mark.parametrize(
         "short_url, new_description",
-        # а new_description - это следующий value, который идет сразу в функцию
         [
             pytest.param(
                 "some description",
