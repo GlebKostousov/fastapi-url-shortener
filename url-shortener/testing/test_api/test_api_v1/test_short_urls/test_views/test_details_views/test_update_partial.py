@@ -9,50 +9,46 @@ from api.api_v1.short_urls.crud import storage
 from core.const import MAX_LENGTH_DESCRIPTION
 from main import app
 from schemas.short_url import ShortUrl
-from testing.conftest import create_short_url
+from testing.conftest import create_short_url_random_slug
 
 
 class TestUpdatePartial:
 
     @pytest.fixture()
     def short_url(self, request: SubRequest) -> Generator[ShortUrl]:
-        slug, description = request.param
-        short_url = create_short_url(slug=slug, description=description)
+        description = request.param
+        short_url = create_short_url_random_slug(description=description)
         yield short_url
         storage.delete(short_url)
 
     @pytest.mark.parametrize(
         "short_url, new_description",
-        # short_url - это tuple для создания объекта фикстуры,
         # а new_description - это следующий value, который идет сразу в функцию
         [
             pytest.param(
-                ("foo", "some description"),
+                "some description",
                 "",
                 id="some-description-to-no-description",
             ),
             pytest.param(
-                ("bar", ""),
+                "",
                 "some description",
                 id="non-description-to-som-description",
             ),
             pytest.param(
-                ("max", "a" * MAX_LENGTH_DESCRIPTION),
+                "a" * MAX_LENGTH_DESCRIPTION,
                 "",
                 id="max-description-to-min-description",
             ),
             pytest.param(
-                ("min", ""),
+                "",
                 "a" * MAX_LENGTH_DESCRIPTION,
                 id="min-description-to-max-description",
             ),
         ],
-        # indirect=True,  # значения не передаются в функцию,
-        # а попадают в фикстуру с нужным полем
         indirect=[
             "short_url",
-        ],  # теперь косвенно отправляем только short_url,
-        # а new_description сразу в функцию
+        ],
     )
     def test_update_short_url_partial(
         self,
