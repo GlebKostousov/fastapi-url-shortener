@@ -11,10 +11,15 @@ from schemas.short_url import ShortUrl, ShortUrlCreate
 
 DESCRIPTION_FOR_TEST = "A short url"
 
-if getenv("TESTING") != "1":
-    pytest.exit(
-        "Environment is not ready for testing",
-    )
+
+@pytest.fixture(scope="session", autouse=True)
+def check_testing_env() -> None:
+    if getenv("TESTING") != "1":
+        pytest.exit(
+            "Environment is not ready for testing",
+        )  # тут тесты не запустятся вообще
+        # pytest.fail("Environment is not ready for testing")
+        # Тогда все тесты запустятся и свалятся с ошибкой
 
 
 def build_short_url_create(
