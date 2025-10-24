@@ -139,18 +139,3 @@ ignore = [
 # Allow fix for all enabled rules (when `--fix`) is provided.
 fixable = ["ALL"]
 unfixable = []
-
-
-[tool.pytest.ini_options]
-minversion = "8.3" # минимальная требуемая версия pytest
-# Отображается сводка по пропущенным/упавшим тестам (опция -ra)
-addopts = "-ra" #-q " # доп параметры для каждого запроса -q просто 1 строка о выполнение
-
-log_cli = false # Отключите вывод логов в консоль
-log_cli_level = "INFO" # Установите уровень логирования
-
-console_output_style = "progress" # стиль вывода
-testpaths = [
-    "tests",
-    "integration",
-] # что ищем в названиях
