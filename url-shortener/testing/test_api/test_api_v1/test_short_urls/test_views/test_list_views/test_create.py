@@ -15,6 +15,7 @@ from testing.conftest import (
 )
 
 
+@pytest.mark.apitest
 def test_create_short_url(auth_client: TestClient) -> None:
     url = app.url_path_for("create_short_url")
     short_url_create = ShortUrlCreate(
@@ -35,6 +36,7 @@ def test_create_short_url(auth_client: TestClient) -> None:
     assert received_values == short_url_create, response_data
 
 
+@pytest.mark.apitest
 def test_create_short_url_already_exists(
     auth_client: TestClient,
     short_url: ShortUrl,
@@ -49,6 +51,7 @@ def test_create_short_url_already_exists(
     assert response_data["detail"] == expected_error_detail, response_data
 
 
+@pytest.mark.apitest
 class TestCreateInvalid:
 
     @pytest.fixture(
