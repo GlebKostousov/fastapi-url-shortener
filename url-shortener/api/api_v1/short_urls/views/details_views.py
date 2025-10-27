@@ -50,6 +50,11 @@ def delete_short_url(
     storage.delete(short_url_in=url)
 
 
+@router.post(path="/transfer/")
+def transfer_short_url() -> None:
+    raise NotImplementedError
+
+
 @router.put(path="/", response_model=ShortUrlRead)
 def update_short_url_details(
     url: ShortUrlBySlug,
