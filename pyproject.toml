@@ -155,3 +155,4 @@ console_output_style = "progress" # стиль вывода в консоль
 markers = [
     "apitest:test any http call"
 ]
+xfail_strict = true # если в тесте не указано, то это значение по умолчанию
