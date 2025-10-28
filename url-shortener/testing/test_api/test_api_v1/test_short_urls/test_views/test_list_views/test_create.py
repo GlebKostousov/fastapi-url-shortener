@@ -1,3 +1,4 @@
+import logging
 import random
 import string
 from typing import Any
@@ -16,7 +17,11 @@ from testing.conftest import (
 
 
 @pytest.mark.apitest
-def test_create_short_url(auth_client: TestClient) -> None:
+def test_create_short_url(
+    caplog: pytest.LogCaptureFixture,
+    auth_client: TestClient,
+) -> None:
+    caplog.set_level(logging.INFO)
     url = app.url_path_for("create_short_url")
     short_url_create = ShortUrlCreate(
         slug="".join(
@@ -34,6 +39,8 @@ def test_create_short_url(auth_client: TestClient) -> None:
     response_data = response.json()
     received_values = ShortUrlCreate(**response_data)
     assert received_values == short_url_create, response_data
+    assert "Created short url" in caplog.text
+    assert short_url_create.slug in caplog.text
 
 
 @pytest.mark.apitest

@@ -22,9 +22,7 @@ class ShortUrlBase(BaseModel):
 
 
 class ShortUrl(ShortUrlBase):
-    """
-    Модель сокращенной ссылки
-    """
+    """Модель сокращенной ссылки"""
 
     slug: Annotated[str, MinLen(2), MaxLen(20)]
     description: str
@@ -32,9 +30,7 @@ class ShortUrl(ShortUrlBase):
 
 
 class ShortUrlCreate(ShortUrlBase):
-    """
-    Модель для создания сокращенной ссылки
-    """
+    """Модель для создания сокращенной ссылки"""
 
     # noinspection PyTypeHints
     slug: Annotated[str, MinLen(2), MaxLen(20)]
