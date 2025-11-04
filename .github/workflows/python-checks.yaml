@@ -1,0 +1,13 @@
+name: Python checks
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  lint-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: PlaceholderGH Actions step
+        run: echo "Hello world"
