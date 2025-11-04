@@ -2,22 +2,24 @@
 
 ## Develop
 
+After push checks any GitHub Actions
+
 ### Setup:
 
 Right click   `url-shortener` -> Mark directory as -> Sources root
 
 ### Configure pre-commit
 
-
-
 ### Install
 
 Install pre-commit hook:
+
 ```shell
 pre-commit install
 ```
 
 Install packages:
+
 ```shell
 uv install
 ```
@@ -25,11 +27,13 @@ uv install
 ### Run
 
 Go to workdir
+
 ```shell
 cd url-shortener
 ```
 
 Run DEV server
+
 ```shell
 fastapi dev
 ```
