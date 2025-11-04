@@ -8,4 +8,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: my first step in Github Actions
-        run: echo "Hello world"
+        run: echo "Hello world ${{ github.event_name}}"
+
+      - name: Second GH Action by ${{ github.actor}}
+        run: echo "Hello action in ${{ github.repository}} ref - ${{ github.ref}}"
+
+      - name: This GH Action running on ${{ runner.os }}
+        run: echo "Action job status ${{ job.status }}"

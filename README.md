@@ -2,8 +2,6 @@
 
 ## Develop
 
-After push checks any GitHub Actions
-
 ### Setup:
 
 Right click   `url-shortener` -> Mark directory as -> Sources root
@@ -12,16 +10,16 @@ Right click   `url-shortener` -> Mark directory as -> Sources root
 
 ### Install
 
-Install pre-commit hook:
-
-```shell
-pre-commit install
-```
-
 Install packages:
 
 ```shell
 uv install
+```
+
+Install pre-commit hook:
+
+```shell
+pre-commit install
 ```
 
 ### Run
