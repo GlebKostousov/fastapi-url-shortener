@@ -1,7 +1,6 @@
 __all__ = ("redis_users",)
 
 import logging
-from typing import cast
 
 from redis import Redis
 
@@ -33,7 +32,7 @@ class UserTokensHelper(AbstractUsersHelper):
         if not self.redis_users.exists(username):
             return None
 
-        return cast("str | None", self.redis_users.get(name=username))
+        return self.redis_users.get(name=username)
 
     def add_user(self, username: str, password: str) -> None:
         self.redis_users.set(name=username, value=password)
