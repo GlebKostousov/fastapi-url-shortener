@@ -1,4 +1,5 @@
-# Fastapi url shortener
+# FastAPI URL Shortener
+
 
 [![Python checks](https://img.shields.io/badge/Python-checks-passing?style=for-the-badge&logo=github-actions&logoColor=white)](https://github.com/GlebKostousov/fastapi-url-shortener/actions/workflows/python-checks.yaml)
 [![Python 3.13.1](https://img.shields.io/badge/Python-3.13.1-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/downloads/release/python-3131/)
