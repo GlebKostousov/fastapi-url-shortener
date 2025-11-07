@@ -10,8 +10,7 @@
 [![MyPy](https://img.shields.io/badge/MyPy-type%20checker-1f5490?style=for-the-badge&logo=python&logoColor=white)](http://mypy-lang.org)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-FAB040?style=for-the-badge&logo=pre-commit&logoColor=black)](https://pre-commit.com)
 [![pytest](https://img.shields.io/badge/pytest-testing-0A9EDC?style=for-the-badge&logo=pytest&logoColor=white)](https://pytest.org)
-
-
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white&style=for-the-badge)](https://github.com/pre-commit/pre-commit)
 
 ## Develop
 
