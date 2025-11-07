@@ -13,7 +13,7 @@ on:
 
 jobs:
 
-  run-black:
+  run-check:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code # скачиваем код в раннер
@@ -29,6 +29,7 @@ jobs:
       - name: Black # проверяем блеком
         run: |
           black --check --diff ./
+
       - name: Setup UV # установка UV
         uses: astral-sh/setup-uv@v5
         with:
@@ -36,9 +37,16 @@ jobs:
           enable-cache: true
       - name: Install the project # установка зависимостей
         run: uv sync --locked --all-extras --dev
-      - name: Run ruff
+
+      - name: Run ruff --dif # запуск ruff c показом ошибок
+        uses: astral-sh/ruff-action@v3
+        with:
+          args: 'check --diff'
+          version-file: "pyproject.toml"
+      - name: Run ruff # запуск ruff стандарт, чтобы показать что все ок
         uses: astral-sh/ruff-action@v3
         with:
           version-file: "pyproject.toml"
+
       - name: run mypy # запуск mypy через UV
         run: uv run mypy url-shortener
