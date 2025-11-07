@@ -12,37 +12,41 @@ on:
       - "url-shortener/**"
 
 jobs:
-  run-black:
+
+  run-check:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout code # скачиваем код в раннер
         uses: actions/checkout@v5
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5 # скачиваем питон из кеша гитхаб
         with:
-          python-version-file: '.python-version'
+          python-version-file: '.python-version' # вот отсюда берем версию питона
 
-      - name: Install Black
+      - name: Install Black⬛
         run: |
           python -m pip install --upgrade pip
           pip install "black==25.1.0"
-
-      - name: Black
+      - name: Black # проверяем блеком
         run: |
           black --check --diff ./
-  run-mypy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code for UV
-        uses: actions/checkout@v5
-      - uses: actions/setup-python@v5
-        with:
-          python-version-file: '.python-version'
-      - name: Setup UV
+
+      - name: Setup UV # установка UV
         uses: astral-sh/setup-uv@v5
         with:
-          pyproject-file: 'pyproject.toml'
+          pyproject-file: 'pyproject.toml' # файл с настройками
           enable-cache: true
-      - name: Install the project
+      - name: Install the project # установка зависимостей
         run: uv sync --locked --all-extras --dev
-      - name: run mypy
+
+      - name: Run ruff --dif # запуск ruff c показом ошибок
+        uses: astral-sh/ruff-action@v3
+        with:
+          args: 'check --diff'
+          version-file: "pyproject.toml"
+      - name: Run ruff # запуск ruff стандарт, чтобы показать что все ок
+        uses: astral-sh/ruff-action@v3
+        with:
+          version-file: "pyproject.toml"
+
+      - name: run mypy # запуск mypy через UV
         run: uv run mypy url-shortener
