@@ -11,7 +11,7 @@ LOG_FORMAT: Final[str] = (
 
 
 """     ----- Настройка Redis -----     """
-REDIS_HOST: Final[str] = "localhost"
+REDIS_HOST: Final[str] = getenv("REDIS_HOST", "localhost")
 REDIS_PORT: Final[int] = int(getenv("REDIS_PORT", "0")) or 6379
 REDIS_DB_TOKENS: Final[int] = 1
 REDIS_TOKENS_SET_NAME: Final[str] = "tokens"
