@@ -1,0 +1,22 @@
+codecov:
+  require_ci_to_pass: true
+  branch: master # название ветки
+
+coverage:
+  precision: 2 # точность округления
+  round: down # как округляем
+  range: 70..80 # c 70 до 80 желтое
+  status:
+    project:
+      default:
+        target: 80%
+        threshold: 5%
+        if_ci_failed: error
+
+parsers:
+  gcov:
+    branch_detection:
+      conditional: yes
+      loop: yes
+      method: no
+      macro: no
