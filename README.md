@@ -13,7 +13,6 @@
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white&style=for-the-badge)](https://github.com/pre-commit/pre-commit)
 [![codecov](https://img.shields.io/codecov/c/github/GlebKostousov/fastapi-url-shortener?style=for-the-badge&logo=codecov&logoColor=white&token=DY9XLLTN7N)](https://codecov.io/github/GlebKostousov/fastapi-url-shortener)
 
-
 ## Develop
 
 ### Setup:
