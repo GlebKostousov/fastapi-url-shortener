@@ -77,15 +77,37 @@ jobs:
         with:
           pyproject-file: 'pyproject.toml'
           enable-cache: true
+
       - name: Install the project
         run: uv sync --locked --all-extras --dev
+
       - name: Run python pytest
-        run: uv run pytest url-shortener --cov=url-shortener --cov-report=xml:coverage.xml
+        run: uv run pytest url-shortener --cov-report=json:coverage.json --cov=url-shortener --cov-report=xml:coverage.xml
         env:
           TESTING: 1
           REDIS_PORT: 6379
+
+      - name: Prepare coverage percentage
+        run: |
+          export EXTRACTED_COVERAGE=$(python -c 'import json;print(json.load(open("coverage.json"))["totals"]["percent_covered_display"])')
+          echo "TOTAL_COVERAGE=$EXTRACTED_COVERAGE" >> $GITHUB_ENV
+          echo "### Tests coverage: {$EXTRACTED_COVERAGE}%" >> $GITHUB_STEP_SUMMARY
+
+      - name: Update coverage badge
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{ secrets.GIST_TOKEN }}
+          gistID: 8ccc9117a4a81627856cb5d379113e0f
+          filename: coverage.json
+          label: Coverage
+          message: ${{env.TOTAL_COVERAGE}}%
+          minColorRange: 70
+          maxColorRange: 90
+          valColorRange: ${{ env.TOTAL_COVERAGE}}
+
       - name: Upload coverage report to Codecov
         uses: codecov/codecov-action@v5
+        if: ${{ !github.event.act }}
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: coverage.xml
