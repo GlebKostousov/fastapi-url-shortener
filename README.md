@@ -54,3 +54,10 @@ fastapi dev
 ```shell
 python -c 'import secrets; print(secrets.token_urlsafe(16))'
 ```
+
+to get static API token for developer test on Windows CLI
+
+```shell
+cd .\url-shortener\
+uv run .\manage.bat tokens list
+```
