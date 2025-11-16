@@ -1,9 +1,10 @@
 """Module for storage config data"""
 
 import logging
+from typing import Literal
 
 from pydantic import BaseModel
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 LOG_FORMAT = (
     "[%(asctime)s.%(msecs)03d] %(module)10s:%(lineno)-3d %(levelname)-7s - %(message)s"
@@ -11,9 +12,19 @@ LOG_FORMAT = (
 
 
 class LoggingConfig(BaseModel):
-    log_level: int = logging.INFO
+    log_level_name: Literal[
+        "DEBUG",
+        "INFO",
+        "WARNING",
+        "ERROR",
+        "CRITICAL",
+    ] = "INFO"
     log_format: str = LOG_FORMAT
     date_format: str = "%Y-%m-%d %H:%M:%S"
+
+    @property
+    def log_level(self) -> int:
+        return logging.getLevelNamesMapping()[self.log_level_name]
 
 
 class RedisSetNames(BaseModel):
@@ -47,6 +58,11 @@ class RedisConfig(BaseModel):
 
 
 class Settings(BaseSettings):
+    model_config = SettingsConfigDict(
+        cli_parse_args=True,  # читать настройки из Cli
+        case_sensitive=False,  # Если True, то учитываем регистр
+    )
+
     logging: LoggingConfig = LoggingConfig()
     redis: RedisConfig = RedisConfig()
 
