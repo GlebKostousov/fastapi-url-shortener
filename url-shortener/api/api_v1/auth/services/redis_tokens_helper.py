@@ -4,6 +4,7 @@ from redis import Redis
 
 from api.api_v1.auth.services.tokens_helper import AbstractTokensHelper
 from core import config
+from core.config import settings
 
 log = logging.getLogger(__name__)
 
@@ -50,8 +51,8 @@ class RedisTokensHelper(AbstractTokensHelper):
 
 
 redis_tokens = RedisTokensHelper(
-    host=config.REDIS_HOST,
-    port=config.REDIS_PORT,
+    host=settings.redis.connection.host,
+    port=settings.redis.connection.port,
     db=config.REDIS_DB_TOKENS,
     decode_responses=True,
     tokens_set_name=config.REDIS_TOKENS_SET_NAME,

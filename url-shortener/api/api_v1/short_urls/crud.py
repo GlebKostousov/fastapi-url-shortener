@@ -13,6 +13,7 @@ from pydantic import BaseModel
 from redis import Redis
 
 from core import config
+from core.config import settings
 from schemas.short_url import (
     ShortUrl,
     ShortUrlCreate,
@@ -23,8 +24,8 @@ from schemas.short_url import (
 log = logging.getLogger(__name__)
 
 redis_short_urls = Redis(
-    host=config.REDIS_HOST,
-    port=config.REDIS_PORT,
+    host=settings.redis.connection.host,
+    port=settings.redis.connection.port,
     db=config.REDIS_DB_SHORT_URLS,
     decode_responses=True,
 )
