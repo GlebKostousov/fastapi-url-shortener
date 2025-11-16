@@ -71,3 +71,10 @@ python -c 'import secrets; print(secrets.token_urlsafe(16))'
 act --action-offline-mode -j run-tests
 
 ```
+
+to get static API token for developer test on Windows CLI
+
+```shell
+cd .\url-shortener\
+uv run .\manage.bat tokens list
+```

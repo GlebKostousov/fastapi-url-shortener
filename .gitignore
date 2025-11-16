@@ -182,3 +182,4 @@ cython_debug/
 /url-shortener/short-urls.json
 /staff.py
 /.secrets
+/coverage.json

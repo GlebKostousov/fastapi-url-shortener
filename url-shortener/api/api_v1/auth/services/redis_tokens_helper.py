@@ -1,9 +1,10 @@
+"""Module for helps with work with user tokens"""
+
 import logging
 
 from redis import Redis
 
 from api.api_v1.auth.services.tokens_helper import AbstractTokensHelper
-from core import config
 from core.config import settings
 
 log = logging.getLogger(__name__)
@@ -53,7 +54,7 @@ class RedisTokensHelper(AbstractTokensHelper):
 redis_tokens = RedisTokensHelper(
     host=settings.redis.connection.host,
     port=settings.redis.connection.port,
-    db=config.REDIS_DB_TOKENS,
+    db=settings.redis.db.tokens,
     decode_responses=True,
-    tokens_set_name=config.REDIS_TOKENS_SET_NAME,
+    tokens_set_name=settings.redis.namespace.set_name.tokens,
 )
