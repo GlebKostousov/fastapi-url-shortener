@@ -24,7 +24,7 @@ class RedisHashNames(BaseModel):
     short_url: str = "short-urls"
 
 
-class RedisNamespace(BaseModel):
+class RedisCollectionNames(BaseModel):
     set_name: RedisSetNames = RedisSetNames()
     hash_names: RedisHashNames = RedisHashNames()
 
@@ -43,7 +43,7 @@ class RedisConnectionConfig(BaseModel):
 class RedisConfig(BaseModel):
     connection: RedisConnectionConfig = RedisConnectionConfig()
     db: RedisDbNumbers = RedisDbNumbers()
-    namespace: RedisNamespace = RedisNamespace()
+    namespace: RedisCollectionNames = RedisCollectionNames()
 
 
 class Settings(BaseSettings):
