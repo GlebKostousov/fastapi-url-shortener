@@ -1,11 +1,13 @@
 """Module for storage config data"""
 
 import logging
+from pathlib import Path
 from typing import Literal, Self
 
 from pydantic import BaseModel, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+BASE_DIR = Path(__file__).resolve().parent.parent
 LOG_FORMAT = (
     "[%(asctime)s.%(msecs)03d] %(module)10s:%(lineno)-3d %(levelname)-7s - %(message)s"
 )
@@ -70,8 +72,10 @@ class RedisConfig(BaseModel):
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        cli_parse_args=True,  # читать настройки из Cli
         case_sensitive=False,  # Если True, то учитываем регистр
+        env_file=BASE_DIR / ".env",
+        env_nested_delimiter="__",
+        env_prefix="URL_SHORTENER__",
     )
 
     logging: LoggingConfig = LoggingConfig()
