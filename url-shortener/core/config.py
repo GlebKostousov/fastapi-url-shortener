@@ -1,9 +1,9 @@
 """Module for storage config data"""
 
 import logging
-from typing import Literal
+from typing import Literal, Self
 
-from pydantic import BaseModel
+from pydantic import BaseModel, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 LOG_FORMAT = (
@@ -44,6 +44,17 @@ class RedisDbNumbers(BaseModel):
     tokens: int = 1
     users: int = 2
     short_urls: int = 3
+    default: int = 0
+
+    @model_validator(mode="after")
+    def validate_dbs_numbers_unique(self) -> Self:
+        model_dict = self.model_dump(mode="python")
+        unique_values = set(model_dict.values())
+        if len(unique_values) == len(model_dict):
+            return self
+
+        msg = "Database number shut be unique!"
+        raise ValueError(msg)
 
 
 class RedisConnectionConfig(BaseModel):
