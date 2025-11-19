@@ -53,6 +53,7 @@ jobs:
 
   run-tests:
     runs-on: ubuntu-latest
+    container: node:20-bookworm-slim
     needs:
       - run-code-style-check
     services:
@@ -63,8 +64,7 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-        ports:
-          - 6379:6379
+
     steps:
       - name: 1. Checkout code
         uses: actions/checkout@v5
@@ -87,7 +87,9 @@ jobs:
         run: uv run pytest url-shortener --cov-report=json:coverage.json --cov=url-shortener --cov-report=xml:coverage.xml
         env:
           TESTING: 1
-          REDIS_PORT: 6379
+          URL_SHORTENER__REDIS__CONNECTION__PORT: redis
+          URL_SHORTENER__REDIS__CONNECTION__HOST: 6379
+
 
       - name: 6. Upload coverage reports artifacts
         uses: actions/upload-artifact@v4
