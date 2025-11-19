@@ -91,7 +91,7 @@ jobs:
 #          PYTHON_VERSION=$(cat .python-version)
 #          uv python install $PYTHON_VERSION
         run: |
-          uv python install
+          uv python install --default --preview
           python --version
 
       - name: 4. Install the project
