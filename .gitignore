@@ -183,3 +183,4 @@ cython_debug/
 /staff.py
 /.secrets
 /coverage.json
+config.local.yaml
