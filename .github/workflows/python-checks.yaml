@@ -53,6 +53,7 @@ jobs:
 
   run-tests:
     runs-on: ubuntu-latest
+    container: node:20-bookworm-slim
     needs:
       - run-code-style-check
     services:
@@ -63,22 +64,20 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-        ports:
-          - 6379:6379
+
     steps:
       - name: 1. Checkout code
         uses: actions/checkout@v5
 
-      - name: 2. Download python
-        uses: actions/setup-python@v5
+      - name: 2. Setup UV
+        uses: astral-sh/setup-uv@v6
         with:
-          python-version-file: '.python-version'
-
-      - name: 3. Setup UV
-        uses: astral-sh/setup-uv@v5
-        with:
-          pyproject-file: 'pyproject.toml'
           enable-cache: true
+
+      - name: 3 Install python with UV
+        run: |
+          uv python install --default --preview
+          python --version # для проверки
 
       - name: 4. Install the project
         run: uv sync --locked --all-extras --dev
@@ -87,7 +86,9 @@ jobs:
         run: uv run pytest url-shortener --cov-report=json:coverage.json --cov=url-shortener --cov-report=xml:coverage.xml
         env:
           TESTING: 1
-          REDIS_PORT: 6379
+          URL_SHORTENER__REDIS__CONNECTION__PORT: 6379
+          URL_SHORTENER__REDIS__CONNECTION__HOST: redis
+
 
       - name: 6. Upload coverage reports artifacts
         uses: actions/upload-artifact@v4
