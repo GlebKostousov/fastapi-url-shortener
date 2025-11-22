@@ -1,16 +1,36 @@
-from fastapi import APIRouter, Request
+import datetime
+from datetime import date
+
+from fastapi import APIRouter
+from fastapi.requests import Request
+from fastapi.responses import HTMLResponse
+
+from templating import templates
 
 router = APIRouter()
 
 
-@router.get("/")
+@router.get(
+    path="/",
+    include_in_schema=False,
+)
 def read_root(
     request: Request,
-    name: str = "World",
-) -> dict[str, str]:
-    docs_url = request.url.replace(path="/docs", query="")
-
-    return {
-        "message": f"Hello {name}!",
-        "docs": str(docs_url),
-    }
+) -> HTMLResponse:
+    context: dict[str, date | list[str]] = {}
+    features: list[str] = [
+        "Create short URLs",
+        "Track all redirects",
+        "Real-time statistics",
+        "Shared management",
+    ]
+    today = datetime.datetime.now(tz=datetime.UTC).date()
+    context.update(
+        today=today,
+        features=features,
+    )
+    return templates.TemplateResponse(
+        request=request,
+        name="home.html",
+        context=context,
+    )

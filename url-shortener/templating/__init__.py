@@ -1,1 +1,3 @@
-from templating.jinja_template import templates as templates
+from templating.jinja_template import templates
+
+__all__ = ("templates",)
