@@ -1,11 +1,13 @@
-import datetime
-from datetime import date
+from typing import TYPE_CHECKING
 
 from fastapi import APIRouter
 from fastapi.requests import Request
 from fastapi.responses import HTMLResponse
 
 from templating import templates
+
+if TYPE_CHECKING:
+    from datetime import date
 
 router = APIRouter()
 
@@ -24,9 +26,7 @@ def read_root(
         "Real-time statistics",
         "Shared management",
     ]
-    today = datetime.datetime.now(tz=datetime.UTC).date()
     context.update(
-        today=today,
         features=features,
     )
     return templates.TemplateResponse(
