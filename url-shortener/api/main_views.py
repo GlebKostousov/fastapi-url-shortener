@@ -34,3 +34,16 @@ def read_root(
         name="home.html",
         context=context,
     )
+
+
+@router.get(
+    path="/about/",
+    include_in_schema=False,
+)
+def about_pages(
+    request: Request,
+) -> HTMLResponse:
+    return templates.TemplateResponse(
+        request=request,
+        name="about.html",
+    )
