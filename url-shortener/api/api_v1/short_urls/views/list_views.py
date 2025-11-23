@@ -7,7 +7,6 @@ from fastapi import (
     status,
 )
 
-from api.api_v1.short_urls.crud import ShortUrlAlreadyExistsError, storage
 from api.api_v1.short_urls.dependencies import (
     api_token_or_basic_auth_required,
 )
@@ -16,6 +15,8 @@ from schemas.short_url import (
     ShortUrlCreate,
     ShortUrlRead,
 )
+from storage.short_url.crud import storage
+from storage.short_url.exceptions import ShortUrlAlreadyExistsError
 
 log = logging.getLogger(__name__)
 

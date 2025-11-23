@@ -1,4 +1,8 @@
-__all__ = ("UNSAFE_METHODS", "prefetch_short_urls")
+__all__ = (
+    "UNSAFE_METHODS",
+    "api_token_or_basic_auth_required",
+    "prefetch_short_urls",
+)
 
 import logging
 from typing import Annotated
@@ -20,8 +24,8 @@ from api.api_v1.auth.services import (
     redis_tokens,
     redis_users,
 )
-from api.api_v1.short_urls.crud import storage
 from schemas.short_url import ShortUrl
+from storage.short_url.crud import storage
 
 log = logging.getLogger(__name__)
 

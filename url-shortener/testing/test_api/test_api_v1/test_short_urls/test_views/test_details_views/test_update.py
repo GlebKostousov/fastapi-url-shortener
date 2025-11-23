@@ -5,10 +5,10 @@ from _pytest.fixtures import SubRequest
 from starlette import status
 from starlette.testclient import TestClient
 
-from api.api_v1.short_urls.crud import storage
 from core.const import MAX_LENGTH_DESCRIPTION
 from main import app
 from schemas.short_url import ShortUrl, ShortUrlUpdate
+from storage.short_url.crud import storage
 from testing.conftest import create_short_url_random_slug
 
 
