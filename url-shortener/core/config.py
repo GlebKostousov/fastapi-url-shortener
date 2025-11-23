@@ -12,7 +12,10 @@ from pydantic_settings import (
     YamlConfigSettingsSource,
 )
 
-__all__ = ("BASE_DIR",)
+__all__ = (
+    "BASE_DIR",
+    "settings",
+)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 LOG_FORMAT = (

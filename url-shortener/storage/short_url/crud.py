@@ -5,7 +5,10 @@ Update
 Delete
 """
 
-__all__ = ("ShortUrlAlreadyExistsError", "storage")
+__all__ = (
+    "ShortUrlStorage",
+    "storage",
+)
 
 import logging
 
@@ -19,6 +22,7 @@ from schemas.short_url import (
     ShortUrlPartialUpdate,
     ShortUrlUpdate,
 )
+from storage.short_url.exceptions import ShortUrlAlreadyExistsError
 
 log = logging.getLogger(__name__)
 
@@ -28,17 +32,6 @@ redis_short_urls = Redis(
     db=settings.redis.db.short_urls,
     decode_responses=True,
 )
-
-
-class ShortUrlBaseError(Exception):
-    """Base exception for short url CRUD actions"""
-
-
-class ShortUrlAlreadyExistsError(ShortUrlBaseError):
-    """Raised when short url already exists"""
-
-    def __init__(self, slug: str) -> None:
-        self.slug = slug
 
 
 class ShortUrlStorage(BaseModel):
