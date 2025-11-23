@@ -1,3 +1,9 @@
+{# задаем имя ручки - Заголовок в навбаре #}
+{% set navigation = [
+('home', 'Home'),
+('about', 'About'),
+] %}
+
 <nav class="navbar navbar-expand-sm bg-body-tertiary fixed-top">
     <div class="container-fluid">
 
@@ -25,20 +31,26 @@
             <ul
                     class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll"
                     style="--bs-scroll-height: 100px;">
-                <li class="nav-item">
-                    <a
-                            class="nav-link active"
-                            aria-current="page"
-                            href="/"
-                    >Home</a>
-                </li>
 
-                <li class="nav-item">
-                    <a
-                            class="nav-link"
-                            href="/about/"
-                    >About</a>
-                </li>
+                {% for name, title in navigation %}
+                    {% set url=url_for(name) %}
+                    <li class="nav-item">
+                        <a
+                                {% if url.path == request.url.path %}
+
+                                    class="nav-link active"
+                                    aria-current="page"
+
+                                {% else %}
+
+                                    class="nav-link"
+
+                                {% endif %}
+
+                                    href="{{ url }}"
+                        >{{ title }}</a>
+                    </li>
+                {% endfor %}
 
 
             </ul>
