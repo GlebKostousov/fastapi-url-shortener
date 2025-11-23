@@ -14,9 +14,10 @@ router = APIRouter()
 
 @router.get(
     path="/",
+    name="home",
     include_in_schema=False,
 )
-def read_root(
+def home_page(
     request: Request,
 ) -> HTMLResponse:
     context: dict[str, date | list[str]] = {}
@@ -38,6 +39,7 @@ def read_root(
 
 @router.get(
     path="/about/",
+    name="about",
     include_in_schema=False,
 )
 def about_pages(
