@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.13.1"
 dependencies = [
     "fastapi[standard]>=0.115.12",
+    "jinja2>=3.1.6",
     "pydantic-settings>=2.12.0",
     "pyyaml>=6.0.2",
     "redis[hiredis]>=6.0.0",
@@ -38,7 +39,7 @@ plugins = ["pydantic.mypy"]
 required-version = ">=0.11.12"
 # Exclude a variety of commonly ignored directories.
 # Allow imports relative to the "src" and "test" directories.
-src = ["url-shortener",]
+src = ["url-shortener", ]
 exclude = [
     ".bzr",
     ".direnv",
@@ -100,7 +101,7 @@ select = [
     "PIE", # flake8-pie (PIE)
     "T20", # flake8-print (T20)
     "PYI", # flake8-pyi (PYI)
-#    "PT", # flake8-pytest-style (PT)
+    #    "PT", # flake8-pytest-style (PT)
     "Q", # flake8-quotes (Q)
     "RSE", # flake8-raise (RSE)
     "RET", # flake8-return (RET)
@@ -117,8 +118,8 @@ select = [
     "PERF", # Perflint (PERF)
     "E", # pycodestyle Error (E)
     "W", # pycodestyle (W)
-#    "DOC", # pydocrint (DOC)
-#     "D", # pycodestyle (D)
+    #    "DOC", # pydocrint (DOC)
+    #     "D", # pycodestyle (D)
     "F", # Pyflakes (F)
     "PGH", # pygrep-hooks
     "PLC", # pylint Convention
@@ -159,6 +160,7 @@ console_output_style = "progress" # стиль вывода в консоль
 
 # регистрация меток "название:описание"
 markers = [
-    "apitest:test any http call"
+    "apitest:test any http call",
+    "templatetest:test any http HTML template page"
 ]
 xfail_strict = true # если в тесте не указано, то это значение по умолчанию

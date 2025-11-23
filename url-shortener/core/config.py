@@ -12,6 +12,8 @@ from pydantic_settings import (
     YamlConfigSettingsSource,
 )
 
+__all__ = ("BASE_DIR",)
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 LOG_FORMAT = (
     "[%(asctime)s.%(msecs)03d] %(module)10s:%(lineno)-3d %(levelname)-7s - %(message)s"
