@@ -15,7 +15,6 @@ router = APIRouter()
 @router.get(
     path="/",
     name="home",
-    include_in_schema=False,
 )
 def home_page(
     request: Request,
@@ -40,7 +39,6 @@ def home_page(
 @router.get(
     path="/about/",
     name="about",
-    include_in_schema=False,
 )
 def about_pages(
     request: Request,
