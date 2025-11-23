@@ -1,32 +1,20 @@
+import pytest
 from fastapi import status
 from fastapi.testclient import TestClient
-from pytest import mark
+
+pytestmark = pytest.mark.templatetest
 
 
-def test_root_view(client: TestClient) -> None:
-    # TODO: fake date
-    name = "John"
-    query = {"name": name}
-    response = client.get("/", params=query)
+def test_home_page(client: TestClient) -> None:
+    response = client.get("/")
     assert response.status_code == status.HTTP_200_OK, response.text
-    response_data = response.json()
-    expected_message = f"Hello {name}!"
-    assert response_data["message"] == expected_message, response_data
 
+    template = getattr(response, "template", None)
+    context = getattr(response, "context", None)
 
-@mark.parametrize(
-    "name",
-    [
-        "john",
-        "",
-        "!@#$",
-        "Jpgm Smith",
-    ],
-)
-def test_root_view_custom_name(name: str, client: TestClient) -> None:
-    query = {"name": name}
-    response = client.get("/", params=query)
-    assert response.status_code == status.HTTP_200_OK, response.text
-    response_data = response.json()
-    expected_message = f"Hello {name}!"
-    assert response_data["message"] == expected_message, response_data
+    assert template is not None, "Response should have template"
+    assert context is not None, "Response should have context"
+
+    assert template.name == "home.html"
+    assert "features" in context
+    assert isinstance(context["features"], list)
