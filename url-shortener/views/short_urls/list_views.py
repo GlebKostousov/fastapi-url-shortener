@@ -1,3 +1,5 @@
+from typing import Any
+
 from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
 
@@ -12,7 +14,11 @@ router = APIRouter()
     response_class=HTMLResponse,
 )
 def list_view(request: Request) -> HTMLResponse:
+    context: dict[str, Any] = {}
+    short_urls = []
+    context.update(short_urls=short_urls)
     return templates.TemplateResponse(
         request=request,
         name="short_urls/list.html",
+        context=context,
     )
