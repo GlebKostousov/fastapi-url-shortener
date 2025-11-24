@@ -9,7 +9,9 @@ from templating import templates
 if TYPE_CHECKING:
     from datetime import date
 
-router = APIRouter()
+router = APIRouter(
+    include_in_schema=False,
+)
 
 
 @router.get(
