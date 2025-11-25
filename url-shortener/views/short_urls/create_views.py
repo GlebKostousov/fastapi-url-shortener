@@ -1,9 +1,10 @@
 from typing import Annotated, Any
 
-from fastapi import APIRouter, Form
+from fastapi import APIRouter, Form, status
 from fastapi.requests import Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 
+from dependencies.short_urls import GetShortUrlsStorage
 from schemas.short_url import ShortUrlCreate
 from templating import templates
 
@@ -39,5 +40,13 @@ def create_short_url(
         ShortUrlCreate,
         Form(),
     ],
-) -> dict[str, str]:
-    return short_url_create.model_dump(mode="json")
+    storage: GetShortUrlsStorage,
+    request: Request,
+) -> RedirectResponse:
+    storage.create_of_raise_if_exists(
+        short_url_in=short_url_create,
+    )
+    return RedirectResponse(
+        url=request.url_for("short-urls:list"),
+        status_code=status.HTTP_303_SEE_OTHER,
+    )
