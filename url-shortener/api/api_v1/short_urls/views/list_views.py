@@ -7,9 +7,7 @@ from fastapi import (
     status,
 )
 
-from api.api_v1.short_urls.dependencies import (
-    api_token_or_basic_auth_required,
-)
+from dependencies.auth import api_token_or_basic_auth_required
 from schemas.short_url import (
     ShortUrl,
     ShortUrlCreate,
