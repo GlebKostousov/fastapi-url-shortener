@@ -4,8 +4,8 @@ import logging
 
 from redis import Redis
 
-from api.api_v1.auth.services.tokens_helper import AbstractTokensHelper
 from core.config import settings
+from services.auth.tokens_helper import AbstractTokensHelper
 
 log = logging.getLogger(__name__)
 

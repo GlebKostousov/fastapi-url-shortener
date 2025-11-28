@@ -7,8 +7,8 @@ from typing import cast
 
 from redis import Redis
 
-from api.api_v1.auth.services.users_helper import AbstractUsersHelper
 from core.config import settings
+from services.auth.users_helper import AbstractUsersHelper
 
 log = logging.getLogger(__name__)
 
