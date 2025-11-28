@@ -1,6 +1,7 @@
 """Module for helps with work with user tokens"""
 
 import logging
+from typing import cast
 
 from redis import Redis
 
@@ -48,7 +49,7 @@ class RedisTokensHelper(AbstractTokensHelper):
         self.redis_tokens.sadd(self.tokens_set, token_to_add)
 
     def get_all_tokens(self) -> list[str]:
-        return list(self.redis_tokens.smembers(self.tokens_set))
+        return list(cast(set[str], self.redis_tokens.smembers(self.tokens_set)))
 
 
 redis_tokens = RedisTokensHelper(

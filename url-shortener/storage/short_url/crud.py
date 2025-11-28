@@ -11,6 +11,8 @@ __all__ = (
 )
 
 import logging
+from collections.abc import Iterable
+from typing import cast
 
 from pydantic import BaseModel
 from redis import Redis
@@ -64,8 +66,9 @@ class ShortUrlStorage(BaseModel):
         """
         return [
             ShortUrl.model_validate_json(value)
-            for value in redis_short_urls.hvals(
-                name=self.hash_name,
+            for value in cast(
+                Iterable[str],
+                redis_short_urls.hvals(name=self.hash_name),
             )
         ]
 
@@ -84,6 +87,7 @@ class ShortUrlStorage(BaseModel):
             name=self.hash_name,
             key=slug,
         ):
+            assert isinstance(short_url_json, str)
             return ShortUrl.model_validate_json(short_url_json)
 
         return None
