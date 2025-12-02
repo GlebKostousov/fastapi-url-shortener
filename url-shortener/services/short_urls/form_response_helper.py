@@ -1,0 +1,63 @@
+from typing import Any
+
+from pydantic import BaseModel, ValidationError
+from starlette import status
+from starlette.datastructures import FormData
+from starlette.requests import Request
+from starlette.responses import HTMLResponse
+
+from templating import templates
+
+__all__ = ("FormResponseHelper",)
+
+
+class FormResponseHelper:
+
+    def __init__(
+        self,
+        model: type[BaseModel],
+        template_name: str,
+    ) -> None:
+        self.model = model
+        self.template_name = template_name
+
+    def render(
+        self,
+        request: Request,
+        *,
+        form_data: FormData | None | BaseModel = None,
+        errors: dict[str, str] | None = None,
+        pydantic_error: ValidationError | None = None,
+        form_validated: bool = False,
+    ) -> HTMLResponse:
+        context: dict[str, Any] = {}
+        if errors is None:
+            errors = {}
+
+        if pydantic_error:
+            errors.update(self._format_pydantic_error(pydantic_error))
+
+        context.update(
+            model_schema=self.model.model_json_schema(),
+            errors=errors,
+            form_validated=form_validated,
+            form_data=form_data,
+        )
+
+        return templates.TemplateResponse(
+            name=self.template_name,
+            request=request,
+            context=context,
+            status_code=(
+                status.HTTP_422_UNPROCESSABLE_ENTITY
+                if form_validated and errors
+                else status.HTTP_200_OK
+            ),
+        )
+
+    @classmethod
+    def _format_pydantic_error(
+        cls,
+        error: ValidationError,
+    ) -> dict[str, str]:
+        return {str(err["loc"][0]): err["msg"] for err in error.errors()}
