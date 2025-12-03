@@ -5,6 +5,8 @@ from starlette import status
 from starlette.requests import Request
 from starlette.responses import RedirectResponse
 
+from dependencies.short_urls import GetShortUrlsStorage, ShortUrlBySlug
+
 logger = getLogger(__name__)
 router = APIRouter(
     prefix="/{slug}/delete",
@@ -18,9 +20,11 @@ router = APIRouter(
 )
 def delete_short_url(
     request: Request,
-    # storage: GetShortUrlsStorage,
-    # short_url: ShortUrlBySlug,
+    storage: GetShortUrlsStorage,
+    short_url: ShortUrlBySlug,
 ) -> RedirectResponse:
+    storage.delete(short_url_in=short_url)
+
     return RedirectResponse(
         url=request.url_for("short-urls:list"),
         status_code=status.HTTP_303_SEE_OTHER,
