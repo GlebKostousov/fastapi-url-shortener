@@ -7,7 +7,7 @@ from fastapi import (
 )
 from starlette.responses import RedirectResponse
 
-from api.api_v1.short_urls.dependencies import prefetch_short_urls
+from dependencies.short_urls import prefetch_short_urls
 from schemas.short_url import ShortUrl
 
 router = APIRouter(
