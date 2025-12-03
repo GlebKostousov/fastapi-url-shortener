@@ -1,10 +1,11 @@
 from logging import getLogger
 
 from fastapi import APIRouter
+from starlette import status
 from starlette.requests import Request
-from starlette.responses import HTMLResponse
+from starlette.responses import HTMLResponse, RedirectResponse
 
-from dependencies.short_urls import ShortUrlBySlug
+from dependencies.short_urls import GetShortUrlsStorage, ShortUrlBySlug
 from schemas.short_url import ShortUrlUpdate
 from services.short_urls import FormResponseHelper
 
@@ -33,3 +34,25 @@ def get_page_update_short_url(
         form_data=form,
         short_url=short_url,
     )
+
+
+@router.post(
+    path="/",
+    name="short-urls:update",
+    response_model=None,
+)
+async def update_short_url(
+    storage: GetShortUrlsStorage,
+    request: Request,
+    short_url: ShortUrlBySlug,
+) -> RedirectResponse | HTMLResponse:
+    async with request.form() as form:
+        short_url_update = ShortUrlUpdate.model_validate(form)
+        storage.update(
+            short_url=short_url,
+            short_url_in=short_url_update,
+        )
+        return RedirectResponse(
+            url=request.url_for("short-urls:list"),
+            status_code=status.HTTP_303_SEE_OTHER,
+        )
