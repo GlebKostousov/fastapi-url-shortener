@@ -1,6 +1,7 @@
 from logging import getLogger
 
 from fastapi import APIRouter
+from pydantic import ValidationError
 from starlette import status
 from starlette.requests import Request
 from starlette.responses import HTMLResponse, RedirectResponse
@@ -47,7 +48,18 @@ async def update_short_url(
     short_url: ShortUrlBySlug,
 ) -> RedirectResponse | HTMLResponse:
     async with request.form() as form:
-        short_url_update = ShortUrlUpdate.model_validate(form)
+
+        try:
+            short_url_update = ShortUrlUpdate.model_validate(form)
+        except ValidationError as validation_error:
+            return form_response.render(
+                request=request,
+                form_data=form,
+                pydantic_error=validation_error,
+                form_validated=True,
+                short_url=short_url,
+            )
+
         storage.update(
             short_url=short_url,
             short_url_in=short_url_update,
