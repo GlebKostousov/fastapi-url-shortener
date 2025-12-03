@@ -50,11 +50,16 @@
                 >Cancel
                 </button>
 
-                <button
-                        type="button"
-                        class="btn btn-danger"
-                >Delete {{ slug }}
-                </button>
+                <form
+                        method="post"
+                        action="{{ modal_action }}">
+                    <button
+                            type="submit"
+                            class="btn btn-danger"
+                    >
+                        Delete {{ slug }}
+                    </button>
+                </form>
 
             </div>
 
