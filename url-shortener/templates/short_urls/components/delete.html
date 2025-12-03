@@ -1,4 +1,7 @@
-<a
-        class="btn btn-outline-danger disabled"
-        href='#'
->Delete</a>
+<button
+        type="button"
+        class="btn btn-outline-danger"
+        data-bs-toggle="modal"
+        data-bs-target="#modal-confirm-delete-{{ slug| urlencode }}">
+    Delete
+</button>
