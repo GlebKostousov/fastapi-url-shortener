@@ -50,8 +50,10 @@
                             <div class="container btn-group btn-group-sm" role="group" aria-label="URL actions">
                                 {% set slug=url.slug %}
                                 {% include 'short_urls/components/edit.html' with context %}
-                                {% include 'short_urls/components/delete.html' %}
+                                {% include 'short_urls/components/delete.html' with context %}
                             </div>
+                            {% set target_url=url.target_url %}
+                            {% include 'short_urls/components/delete-modal.html' with context %}
                         </td>
 
 
