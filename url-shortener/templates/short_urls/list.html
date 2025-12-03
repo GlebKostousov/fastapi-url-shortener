@@ -53,6 +53,7 @@
                                 {% include 'short_urls/components/delete.html' with context %}
                             </div>
                             {% set target_url=url.target_url %}
+                            {% set modal_action=url_for('short-urls:delete', slug=slug) %}
                             {% include 'short_urls/components/delete-modal.html' with context %}
                         </td>
 
