@@ -18,7 +18,7 @@ Description = Annotated[str, MaxLen(MAX_LENGTH_DESCRIPTION)]
 
 class ShortUrlBase(BaseModel):
     target_url: AnyHttpUrl
-    description: Description
+    description: Description = ""
 
 
 class ShortUrl(ShortUrlBase):

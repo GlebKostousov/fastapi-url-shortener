@@ -2,17 +2,17 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Create new Short URL
+    Update Short URL {{ short_url.slug }}
 {% endblock %}
 
 
 
 {% block main %}
-    <h1>Create a new Short URL</h1>
+    <h1> Update Short URL <code>{{ short_url.slug }}</code></h1>
 
     {{ render_form(
-            action = url_for('short-urls:create'),
-            button_text = 'Create'
+            action =url_for('short-urls:update',slug=short_url.slug),
+            button_text = 'Update'
             ) }}
 
     {% include 'short_urls/components/back-to-list.html' %}
