@@ -23,7 +23,10 @@ def delete_short_url(
     storage: GetShortUrlsStorage,
     short_url: ShortUrlBySlug,
 ) -> RedirectResponse:
+    slug = short_url.slug
     storage.delete(short_url_in=short_url)
+
+    request.session["message"] = f"Short URL with slug {slug!r} was deleted "
 
     return RedirectResponse(
         url=request.url_for("short-urls:list"),

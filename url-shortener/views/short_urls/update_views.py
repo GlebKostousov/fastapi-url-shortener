@@ -64,6 +64,9 @@ async def update_short_url(
             short_url=short_url,
             short_url_in=short_url_update,
         )
+        request.session["message"] = (
+            f"Short URL with slug {short_url.slug!r} was modified "
+        )
         return RedirectResponse(
             url=request.url_for("short-urls:list"),
             status_code=status.HTTP_303_SEE_OTHER,
