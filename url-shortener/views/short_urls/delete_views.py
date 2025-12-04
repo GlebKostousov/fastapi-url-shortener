@@ -6,6 +6,7 @@ from starlette.requests import Request
 from starlette.responses import RedirectResponse
 
 from dependencies.short_urls import GetShortUrlsStorage, ShortUrlBySlug
+from misc.flash_message import create_flash_message
 
 logger = getLogger(__name__)
 router = APIRouter(
@@ -26,7 +27,11 @@ def delete_short_url(
     slug = short_url.slug
     storage.delete(short_url_in=short_url)
 
-    request.session["message"] = f"Short URL with slug {slug!r} was deleted "
+    create_flash_message(
+        request=request,
+        message=f"Short URL {slug!r} was deleted ",
+        category="danger",
+    )
 
     return RedirectResponse(
         url=request.url_for("short-urls:list"),

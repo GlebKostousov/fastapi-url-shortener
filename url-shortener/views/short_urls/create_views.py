@@ -6,6 +6,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from pydantic import ValidationError
 
 from dependencies.short_urls import GetShortUrlsStorage
+from misc.flash_message import create_flash_message
 from schemas.short_url import ShortUrlCreate
 from services.short_urls import FormResponseHelper
 from storage.short_url.exceptions import ShortUrlAlreadyExistsError
@@ -62,8 +63,10 @@ async def create_short_url(
             "slug": f"Short url with slug {short_url_create.slug!r} already exists.",
         }
     else:
-        request.session["message"] = (
-            f"Short URL with slug {short_url_create.slug!r} was created "
+        create_flash_message(
+            request=request,
+            message=f"Short URL {short_url_create.slug!r} was created ",
+            category="success",
         )
         return RedirectResponse(
             url=request.url_for("short-urls:list"),
