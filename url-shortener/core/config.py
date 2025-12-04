@@ -39,6 +39,10 @@ class LoggingConfig(BaseModel):
         return logging.getLevelNamesMapping()[self.log_level_name]
 
 
+class SessionConfig(BaseSettings):
+    secret_key: str
+
+
 class RedisSetNames(BaseModel):
     tokens: str = "tokens"
 
@@ -98,6 +102,7 @@ class Settings(BaseSettings):
 
     logging: LoggingConfig = LoggingConfig()
     redis: RedisConfig = RedisConfig()
+    session: SessionConfig
 
     @classmethod
     def settings_customise_sources(
