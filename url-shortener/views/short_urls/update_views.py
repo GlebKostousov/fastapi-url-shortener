@@ -7,6 +7,7 @@ from starlette.requests import Request
 from starlette.responses import HTMLResponse, RedirectResponse
 
 from dependencies.short_urls import GetShortUrlsStorage, ShortUrlBySlug
+from misc.flash_message import create_flash_message
 from schemas.short_url import ShortUrlUpdate
 from services.short_urls import FormResponseHelper
 
@@ -63,6 +64,11 @@ async def update_short_url(
         storage.update(
             short_url=short_url,
             short_url_in=short_url_update,
+        )
+        create_flash_message(
+            request=request,
+            message=f"Short URL {short_url.slug!r} was modified ",
+            category="warning",
         )
         return RedirectResponse(
             url=request.url_for("short-urls:list"),

@@ -1,1 +1,2 @@
 MAX_LENGTH_DESCRIPTION = 200
+FLASHED_MESSAGES_KEY = "_flashed_messages"
